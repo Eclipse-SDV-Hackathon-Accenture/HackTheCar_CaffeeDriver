@@ -1,6 +1,8 @@
 import sys
 import time
 
+sys.path.insert(0, '..')
+
 import ecal.core.core as ecal_core
 from ecal.core.subscriber import ProtoSubscriber
 

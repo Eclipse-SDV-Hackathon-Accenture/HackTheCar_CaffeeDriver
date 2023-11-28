@@ -6,44 +6,51 @@ from ecal.core.publisher import StringPublisher
 from ecal.core.subscriber import StringSubscriber
 
 class Coordinator:
+
   def __init__(self) -> None:
     print("Coordinator init...")
 
-offenderDetector_Detected = False
-victimDetector_Detected = False
+    ecal_core.initialize(sys.argv, "Python Coordinator")
 
-def callback_OffenderDetector_Detected(topic_name, msg, time):
-  # print("Received: {}".format(msg))
-  global offenderDetector_Detected
-  offenderDetector_Detected = (msg == "True")
+    self.offenderDetector_Detected = False
+    self.victimDetector_Detected = False
+    
+    self.pub_Coordinator_Warning = StringPublisher("Coordinator.Warning")
 
-def callback_VictimDetector_Detected(topic_name, msg, time):
-  # print("Received: {}".format(msg))
-  global victimDetector_Detected
-  victimDetector_Detected = (msg == "True")
+    
+    sub_OffenderDetector_Detected = StringSubscriber("OffenderDetector.Detected")
+    sub_VictimDetector_Detected = StringSubscriber("VictimDetector.Detected")
+    
+    sub_OffenderDetector_Detected.set_callback(self.callback_OffenderDetector_Detected)
+    sub_VictimDetector_Detected.set_callback(self.callback_VictimDetector_Detected)
+    
+
+  def run(self):
+    while ecal_core.ok():
+
+      print(f'offenderDetector_Detected: {self.offenderDetector_Detected}')
+      print(f'victimDetector_Detected: {self.victimDetector_Detected}')
+      print()
+
+      warning = self.offenderDetector_Detected and self.victimDetector_Detected
+      self.pub_Coordinator_Warning.send(str(warning))
+
+      
+      time.sleep(0.5)
+    
+    # finalize eCAL API
+    ecal_core.finalize()
+    
+  def callback_OffenderDetector_Detected(self, topic_name, msg, time):
+    # print("Debug eCAL callback_OffenderDetector_Detected: {}".format(msg))
+    self.offenderDetector_Detected = (msg == "True")
+
+  def callback_VictimDetector_Detected(self, topic_name, msg, time):
+    # print("Debug eCAL callback_VictimDetector_Detected: {}".format(msg))
+    self.victimDetector_Detected = (msg == "True")
+
 
 if __name__ == "__main__":
 
   coordinator = Coordinator()
-
-  # initialize eCAL API. The name of our Process will be "Python Hello World Publisher"
-  ecal_core.initialize(sys.argv, "Python Coordinator")
-
-  # Create a String Publisher that publishes on the topic
-  pub = StringPublisher("Coordinator.Warning")
-
-  
-  sub_OffenderDetector_Detected = StringSubscriber("OffenderDetector.Detected")
-  sub_VictimDetector_Detected = StringSubscriber("VictimDetector.Detected")
-  
-  sub_OffenderDetector_Detected.set_callback(callback_OffenderDetector_Detected)
-  sub_VictimDetector_Detected.set_callback(callback_VictimDetector_Detected)
-  
-  # Just don't exit
-  while ecal_core.ok():
-    time.sleep(0.5)
-    print(f'offenderDetector_Detected: {offenderDetector_Detected}')
-    print(f'victimDetector_Detected: {victimDetector_Detected}')
-    print()
-  # finalize eCAL API
-  ecal_core.finalize()
+  coordinator.run()
