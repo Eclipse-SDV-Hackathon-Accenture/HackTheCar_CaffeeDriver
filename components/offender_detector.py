@@ -30,9 +30,8 @@ class OffenderDetector:
     while ecal_core.ok():
       
       self.pub_OffenderDetector_Detected.send(str(self.detected))
-      self.detected = not self.detected
       
-      time.sleep(0.5)
+      time.sleep(0.1)
       
     # finalize eCAL API
     ecal_core.finalize()
@@ -41,10 +40,16 @@ class OffenderDetector:
     ma = marker_array_proto_msg
     if(len(ma.markers) > 0):
       for var in ma.markers:
-        if(var.ns == "pedestrian"):
-          print("pedestrian")
+        # if(var.ns == "pedestrian"):
+          # print("pedestrian")
+        detected = False
+        if(var.ns == "car"):
+          if var.pose.position.x < 40 and var.pose.position.x > 45:
+            if var.pose.position.y < 12 and var.pose.position.y > 0:
+              detected = True
+        
+        self.detected = False
           
-
 if __name__ == "__main__":
 
   offenderDetector = OffenderDetector()
