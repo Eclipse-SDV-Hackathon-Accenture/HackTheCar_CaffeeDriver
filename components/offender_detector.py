@@ -1,7 +1,7 @@
 import sys
 import time
 
-sys.path.insert(0, '../..')
+sys.path.insert(0, '..')
 
 import ecal.core.core as ecal_core
 from ecal.core.publisher import StringPublisher
