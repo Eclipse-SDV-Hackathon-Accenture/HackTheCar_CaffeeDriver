@@ -6,8 +6,10 @@ sys.path.insert(0, '..')
 import ecal.core.core as ecal_core
 from ecal.core.publisher import StringPublisher
 from ecal.core.subscriber import ProtoSubscriber
+from ecal.core.publisher import ProtoPublisher
 
 import datatypes.ros.visualization_msgs.MarkerArray_pb2 as MarkerArray
+import datatypes.offender_detector_pb2 as offender_detector_pb2
 
 class OffenderDetector:
   def __init__(self) -> None:
@@ -19,18 +21,24 @@ class OffenderDetector:
     ecal_core.initialize(sys.argv, "Python OffenderDetector")
 
     # Create a String Publisher that publishes on the topic
-    self.pub_OffenderDetector_Detected = StringPublisher("OffenderDetector.Detected")
+    # self.pub_OffenderDetector_Detected = StringPublisher("OffenderDetector.Detected")
+    
+    self.pub_OffenderDetector = ProtoPublisher("OffenderDetector", offender_detector_pb2.OfferDetector)
     
     self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSTrafficParticipantList", MarkerArray.MarkerArray)
-
     self.sub_ROSTrafficParticipantList.set_callback(self.callback_ROSTrafficParticipantList)
 
   def run(self) -> None:
     
     while ecal_core.ok():
       
-      self.pub_OffenderDetector_Detected.send(str(self.detected))
+      # self.pub_OffenderDetector_Detected.send(str(self.detected))
       
+      msg_OfferDetector = offender_detector_pb2.OfferDetector()
+
+      msg_OfferDetector.detected = self.detected
+      self.pub_OffenderDetector.send(msg_OfferDetector)
+
       time.sleep(0.1)
       
     # finalize eCAL API
@@ -48,7 +56,8 @@ class OffenderDetector:
             if var.pose.position.y < 12 and var.pose.position.y > 0:
               detected = True
         
-        self.detected = False
+        # self.detected = detected
+        self.detected = not self.detected
           
 if __name__ == "__main__":
 
