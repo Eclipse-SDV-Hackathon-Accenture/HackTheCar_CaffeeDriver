@@ -122,10 +122,10 @@ Using this data, we can create an effective detection algorithm that accurately 
 
 ### Coordinate system transformation
 
-Provided trace data contains coordinates in a system placed in the world. The axes of the world-related coordinate system can, but not have to be parallel to same axes of the car-related coordinate system.
+The trace data provided contains coordinates in a world-related coordinate system. Although the axes of this system may not necessarily be parallel to those of the car-related coordinate system.
+To detect the parallelism of the Offender trajectory, we require a coordinate system transformation. The offset and angles of rotation for all three coordinates are provided by the car abstraction layer. 
 
-To detect the parallelism of the Offender trajectory a coordinate system transformation is necessary. The offset and the angles of rotation for all three coordinates are provided by the car abstraction layer.
-
+This transformation allows us to accurately determine the position and movement of the Offender relative to the Ego vehicle.Through careful analysis and implementation of these transformations, we can create an effective detection algorithm that accurately identifies potential danger situations and triggers the appropriate warning system.
 ### Integration of the Guardian Angel components
 
 Transfer of the data from and to the components is realized with
