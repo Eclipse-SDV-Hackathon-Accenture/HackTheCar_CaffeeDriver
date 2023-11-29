@@ -11,21 +11,21 @@ from ecal.core.subscriber import StringSubscriber
 
 import datatypes.offender_detector_pb2 as offender_detector_pb2
 import datatypes.victim_detector_pb2 as victim_detector_pb2
-import datatypes.guardian_angle_pb2 as guardian_angle_pb2
+import datatypes.guardian_angel_pb2 as guardian_angel_pb2
 import samples.indicator_request.Arbitration.IndicatorRequest_pb2
 
-class GuardianAngle:
+class GuardianAngel:
 
   def __init__(self) -> None:
-    print("GuardianAngle init...")
+    print("GuardianAngel init...")
 
-    ecal_core.initialize(sys.argv, "Python GuardianAngle")
+    ecal_core.initialize(sys.argv, "Python GuardianAngel")
     self.pub_turnIndicator = ProtoPublisher("TurnIndicator", samples.indicator_request.Arbitration.IndicatorRequest_pb2.IndicatorRequest)  
 
     self.offenderDetector_Detected = False
     self.victimDetector_Detected = False
     
-    self.pub_GuardianAngle = ProtoPublisher("GuardianAngle", guardian_angle_pb2.GuardianAngle)
+    self.pub_GuardianAngel = ProtoPublisher("GuardianAngel", guardian_angel_pb2.GuardianAngel)
 
     self.sub_OfferDetector = ProtoSubscriber("OffenderDetector", offender_detector_pb2.OfferDetector)
     self.sub_VictimDetector = ProtoSubscriber("VictimDetector", victim_detector_pb2.VictimDetector)
@@ -40,21 +40,21 @@ class GuardianAngle:
       print(f'victimDetector_Detected: {self.victimDetector_Detected}')
       print()
 
-      msg_guardianAngle = guardian_angle_pb2.GuardianAngle()
-      # msg_guardianAngle.warning = self.offenderDetector_Detected and self.victimDetector_Detected
-      # self.pub_GuardianAngle.send(msg_guardianAngle)
+      msg_guardianAngel = guardian_angel_pb2.GuardianAngel()
+      # msg_guardianAngel.warning = self.offenderDetector_Detected and self.victimDetector_Detected
+      # self.pub_GuardianAngel.send(msg_guardianAngel)
 
       ####
       pb_msg = samples.indicator_request.Arbitration.IndicatorRequest_pb2.IndicatorRequest()
       pb_msg.indicator_request = pb_msg.Indicator.IS_OFF
-      msg_guardianAngle.warning = False
+      msg_guardianAngel.warning = False
       
       if self.offenderDetector_Detected and self.victimDetector_Detected:
         pb_msg.indicator_request = pb_msg.Indicator.IS_BOTH
-        msg_guardianAngle.warning = True
+        msg_guardianAngel.warning = True
 
         
-      #self.pub_GuardianAngle.send(msg_guardianAngle)
+      #self.pub_GuardianAngel.send(msg_guardianAngel)
       self.pub_turnIndicator.send(pb_msg)
       
       time.sleep(0.5)
@@ -81,5 +81,5 @@ class GuardianAngle:
 
 
 if __name__ == "__main__":
-  coordinator = GuardianAngle()
-  coordinator.run()
+  guardianAngel = GuardianAngel()
+  guardianAngel.run()
