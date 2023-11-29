@@ -10,7 +10,9 @@ import datatypes.ros.visualization_msgs.MarkerArray_pb2 as MarkerArray
 import datatypes.ros.tf2_msgs.TFMessage_pb2 as TFMessage
 
 last_x = {}
+last_x_rot = {}
 last_y = {}
+last_y_rot = {}
 
 
 class CoordinateTransformer:
@@ -94,22 +96,36 @@ class CoordinateTransformer:
 
                 last_y.update({marker.id: y_current})
 
-                x_rot = delta_x * cos - delta_y * sin
-                y_rot = delta_x * sin + delta_y * cos
+                delta_x_rot = delta_x * cos - delta_y * sin
+                delta_y_rot = delta_x * sin + delta_y * cos
 
-                marker.pose.position.x += x_rot
-                marker.pose.position.y += y_rot
+                if marker.id in last_x_rot:
+                    x_rot = last_x_rot[marker.id] + delta_x_rot
+                else:
+                    x_rot = delta_x_rot
 
-                # if marker.id == 22845:
-                #     print("----------------")
-                #     print(x_current, y_current)
-                #     print(last_x[marker.id], last_y[marker.id])
-                #     print(cos, sin)
-                #     print(delta_x, delta_y)
-                #     print(delta_x * cos, delta_y * sin)
-                #     print(self.vehicleYaw)
-                #     print(x_rot, y_rot)
-                #     print(marker.pose.position.x, marker.pose.position.y)
+                if marker.id in last_y_rot:
+                    y_rot = last_y_rot[marker.id] + delta_y_rot
+                else:
+                    y_rot = delta_y_rot
+
+                last_x_rot.update({marker.id: x_rot})
+                last_y_rot.update({marker.id: y_rot})
+
+                marker.pose.position.x = x_rot
+                marker.pose.position.y = y_rot
+
+                if marker.id == 22845:
+                    print("----------------")
+                    print(x_current, y_current)
+                    print(last_x[marker.id], last_y[marker.id])
+                    print(cos, sin)
+                    print(delta_x, delta_y)
+                    print(delta_x * cos, delta_y * sin)
+                    print(self.vehicleYaw)
+                    print(delta_x_rot, delta_y_rot)
+                    print(x_rot, y_rot)
+                    print(marker.pose.position.x, marker.pose.position.y)
 
             self.pub_ROSTrafficParticipantListTransformt.send(marker_array_proto_msg)
 
