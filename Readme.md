@@ -151,7 +151,7 @@ Stub -- Stimulation --> Component1 --> Component2 -- Result --> Evaluation
 
 ### Rising of the warning
 This flow chart shows the process of the warning function, which utilizes the Ego car sensor array to detect potential danger situations involving the Offender and the Victim. If a danger situation is identified, the system triggers the warning system, which includes activating turn signal lights on the Ego vehicle.
-# TODO: Chart for warnings
+TODO: Chart for warnings
 
 
 ### Visualization
