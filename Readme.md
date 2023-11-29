@@ -1,18 +1,19 @@
 # Hack the Car by Coffee Driver (IAV)
 
-## Idea
+## Idea for Our Tool: Warning Traffic Participants of Danger Situations using Car2X Communication
 
-We want to warn the traffic participants, if a danger situation can arise. 
-For purposes of SDV Hackathon 2023 challenge we cover only one scenario.
+The idea for our tool comes from recognizing the need to improve communication between vehicles on the road. Specifically, we aim to address the issue of potential danger situations arising when interacting with other road users.To achieve this, we have developed a tool that uses Car2X communication to warn traffic participants if a danger situation can arise.  
+By providing clear and timely communication to other road users, we believe we can increase safety and reduce the number of accidents on the road. We recognize the importance of efficient and effective communication and strive to contribute to the development of a safer transportation system.
+We have chosen to focus on one specific scenario for the SDV Hackathon 2023 challenge due to the limited timeframe.
+
+
 
 ## Covered scenario
 
-Assumed the target car (Ego car) is parked on the street shoulder, we want to detect, 
-if, at the same time, a pedestrian is about to walk across the street for or behind the Ego car
-and a car (Offender) passes the Ego car.
-In this case can the pedestrian be harmed by the passed car.
-To prevent it both traffic participants should be warned by the Ego car,
-which make the Ego car incarnate a Guardian Angel (in the meaning of protecting the pedestrian).
+The scenario we have chosen to focus on for the SDV Hackathon 2023 challenge involves a pedestrian about to cross the street in front of or behind the Ego vehicle while another vehicle (Offender) is passing through. In this situation, there is a risk of an accident occurring if both the Offender and the pedestrian are not aware of each other's presence.
+To prevent this from happening and increase road safety, our tool is designed to activate the indicator lights in the Ego vehicle as a warning signal. This warning signal will alert both the Offender and the pedestrian of the potential danger and allow them to take appropriate actions to avoid an accident.
+Our tool uses Car2X communication to detect the presence of the Offender and the pedestrian and determine their positions relative to the Ego vehicle. If both are present at the same time, the tool triggers the indicator lights in the Ego vehicle. This feature is designed to provide a clear and timely warning to all parties involved and reduce the risk of accidents.
+
 
 ```
 =======================================
@@ -48,7 +49,7 @@ Further warning channels and visualization are imaginable:
 
 - Car lights to side select warning
 - Car lights to spot the pedestrian to improve the visibility
-- Car2car communication to the Offender to warn over its HMI and possibly prepare or execute a braking
+- Car2X communication to the Offender to warn over its HMI and possibly prepare or execute a braking
 - The build-in music system to tell the pedestrian about the danger and its direction
 - Anonymized post into the (city traffic) cloud to train the AI and detect potential danger spots
 
@@ -68,20 +69,45 @@ Both the sensor data and the warning system are provided by the given car over a
 ```mermaid
     flowchart LR
         classDef given stroke:#777, fill:#777
-        subgraph Sensor data 
+
+  subgraph Sensor data 
             Car:::given
             Trace:::given
             Stub
         end
-        subgraph Guardian Angel 
-            offender[Offender Detector]
-            victim[Victim Detector]
-            state[Car State Check]
+
+subgraph Danger detection
+transformer[Coordinates
+            System
+Transformer]
+offender[Offender
+Detector]
+victim[Victim
+Detector]
+angel[Guardian
+Angel]
         end
-        Car & Trace & Stub --Markers--> offender & victim
-        offender -- offender detected--> warning[Warning System]:::given
-        victim -- victim detected--> warning
-        Car & Trace --Signals--> state --Car state --> warning
+
+subgraph Warning rising
+car_out[Car]:::given
+Car2X
+end
+
+Car & Trace & Stub --Markers --> transformer
+
+transformer -- Transformed
+marker--> offender & victim
+
+offender -- offender
+detected --> angel
+
+victim -- victim
+detected--> angel
+
+angel -- Light on --> car_out
+
+angel -- Data --> Car2X
+
 ```
 
 ### Sensor data feeding
@@ -111,17 +137,34 @@ provided by the car abstraction layer.
 
 ### Integration of the Guardian Angel components
 
-Transfer of the data from and to the components is
-
-eCAL messages
-
-protobuf-format
-
-Visualization
+Transfer of the data from and to the components is realized with
+eCAL messages containing objects in protobuf-format.
+All components subscribe to certain message topics,
+which gives the possibility to visualize the inter-component communication
+and to inject synthetic messages for testing purposes.
+A stub is developed to provide the message generation with wished values.
 
 ### Testing
 
-### Performing of the warning
+The behavior of every component and the whole system should be tested
+to ensure the correct
+
+The system is developed in a modular architecture with defined data containers (messages).
+So can every component be tested isolated, but as a part of a (sub-)system.
+
+````mermaid
+    flowchart LR
+  Stub -- Stimulation --> Component -- Result --> Evaluation
+
+````
+
+````mermaid
+    flowchart LR
+  Stub -- Stimulation --> Component1 --> Component2 -- Result --> Evaluation
+
+````
+
+### Rising of the warning
 
 ### Visualization
 
