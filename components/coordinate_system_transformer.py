@@ -11,8 +11,6 @@ import datatypes.ros.visualization_msgs.MarkerArray_pb2 as MarkerArray
 import datatypes.ros.tf2_msgs.TFMessage_pb2 as TFMessage
 
 
-
-
 class CoordinateTransformer:
     def __init__(self) -> None:
 
@@ -27,7 +25,7 @@ class CoordinateTransformer:
         self.lidarYaw = 0.0
         self.vehicleYaw = 0.0
 
-        ecal_core.initialize(sys.argv, "Python Protobuf Subscriber")
+        ecal_core.initialize(sys.argv, "Coordinate Transformer")
 
         self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSTrafficParticipantList", MarkerArray.MarkerArray)
         self.sub_ROSVehiclePoseTransforms = ProtoSubscriber("ROSVehiclePoseTransforms", TFMessage.TFMessage)
