@@ -109,17 +109,16 @@ angel -- Data --> Car2X
 
 ### Sensor data feeding
 
-For purposes of the development we used both the trace recorded while simulating of a set of sub-scenarios
-and an implemented stub to feed objects in the Ego car environment.
+In our development process, we utilize both a recorded trace from a set of sub-scenarios and an implemented stub to populate objects in the Ego vehicle environment.
+The scenario we are covering involves the detection of two traffic participants: the Offender and the Victim. To better understand the world representation with the provided sensor data, we recorded two isolated traces in addition to a complete trace:
 
-Our covered scenario contains detection of two traffic participants.
-For understanding of world representation with provided sensor data
-two isolated traces was recorded in addition to complete one:
+- The movement of the passing car (Offender)
+- The movement of the pedestrian (Victim), including movement around the Ego car to determine its dimensions
+- Simultaneous movement of both the Offender and the Victim.
+- 
+These traces provide us with a more comprehensive understanding of the movements and behavior of the traffic participants involved in the scenario. 
+Using this data, we can create an effective detection algorithm that accurately identifies potential danger situations and triggers the appropriate warning system.
 
-- Movement of the passing car (Offender)
-- Movement of the Pedestrian (Victim)
-  - inclusive a movement around the Ego car to determine its dimensions
-- Simultaneous movement of both the Offender and the Victim
 
 ### Coordinate system transformation
 
