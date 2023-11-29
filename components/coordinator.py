@@ -28,8 +28,8 @@ class Coordinator:
     # sub_OffenderDetector_Detected.set_callback(self.callback_OffenderDetector_Detected)
     # sub_VictimDetector_Detected.set_callback(self.callback_VictimDetector_Detected)
 
-    self.sub_OfferDetector = ProtoSubscriber("ROSTrafficParticipantList", offender_detector_pb2.OfferDetector)
-    self.sub_VictimDetector = ProtoSubscriber("ROSTrafficParticipantList", victim_detector_pb2.VictimDetector)
+    self.sub_OfferDetector = ProtoSubscriber("OfferDetector", offender_detector_pb2.OfferDetector)
+    self.sub_VictimDetector = ProtoSubscriber("VictimDetector", victim_detector_pb2.VictimDetector)
     
     self.sub_OfferDetector.set_callback(self.callback_OffenderDetector)
     self.sub_VictimDetector.set_callback(self.callback_VictimDetector)
@@ -60,15 +60,14 @@ class Coordinator:
     self.victimDetector_Detected = (msg == "True")
   
   def callback_OffenderDetector(self, topic_name, msg, time):
-    # print("Debug eCAL callback_OffenderDetector_Detected: {}".format(msg))
+    print("Debug eCAL OffenderDetector: {}".format(msg.detected))
     self.offenderDetector_Detected = msg.detected
 
   def callback_VictimDetector(self, topic_name, msg, time):
-    # print("Debug eCAL callback_VictimDetector_Detected: {}".format(msg))
+    print("Debug eCAL VictimDetector: {}".format(msg.detected))
     self.victimDetector_Detected = msg.detected
 
 
 if __name__ == "__main__":
-
   coordinator = Coordinator()
   coordinator.run()
