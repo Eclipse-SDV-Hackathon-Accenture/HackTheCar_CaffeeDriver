@@ -115,21 +115,16 @@ The scenario we are covering involves the detection of two traffic participants:
 - The movement of the passing car (Offender)
 - The movement of the pedestrian (Victim), including movement around the Ego car to determine its dimensions
 - Simultaneous movement of both the Offender and the Victim.
-- 
+
 These traces provide us with a more comprehensive understanding of the movements and behavior of the traffic participants involved in the scenario. 
 Using this data, we can create an effective detection algorithm that accurately identifies potential danger situations and triggers the appropriate warning system.
 
 
 ### Coordinate system transformation
 
-Provided trace data contains coordinates in a system placed in the world.
-The axes of the world-related coordinate system can,
-but not have to be parallel to same axes of the car-related coordinate system.
+Provided trace data contains coordinates in a system placed in the world. The axes of the world-related coordinate system can, but not have to be parallel to same axes of the car-related coordinate system.
 
-To detect the parallelism of the Offender trajectory
-a coordinate system transformation is necessary.
-The offset and the angles of rotation for all three coordinates are
-provided by the car abstraction layer.
+To detect the parallelism of the Offender trajectory a coordinate system transformation is necessary. The offset and the angles of rotation for all three coordinates are provided by the car abstraction layer.
 
 ### Integration of the Guardian Angel components
 
