@@ -1,5 +1,8 @@
 import sys
 import time
+import threading
+
+import paho.mqtt.client as mqtt
 
 sys.path.insert(0, '..')
 
@@ -19,11 +22,15 @@ class GuardianAngel:
   def __init__(self) -> None:
     print("GuardianAngel init...")
 
+    # self.mqtt = mqtt.Client()
+    # self.mqtt.connect("localhost",1883)
+                  
     ecal_core.initialize(sys.argv, "Python GuardianAngel")
     self.pub_turnIndicator = ProtoPublisher("TurnIndicator", samples.indicator_request.Arbitration.IndicatorRequest_pb2.IndicatorRequest)  
 
     self.offenderDetector_Detected = False
     self.victimDetector_Detected = False
+    self.warning = False
     
     self.pub_GuardianAngel = ProtoPublisher("GuardianAngel", guardian_angel_pb2.GuardianAngel)
 
@@ -34,35 +41,42 @@ class GuardianAngel:
     self.sub_VictimDetector.set_callback(self.callback_VictimDetector)
 
   def run(self):
+
+    # thrad_car2car = threading.Thread(target=self.car2car_loop)
+    # thrad_car2car.start()
+
     while ecal_core.ok():
 
       print(f'offenderDetector_Detected: {self.offenderDetector_Detected}')
       print(f'victimDetector_Detected: {self.victimDetector_Detected}')
       print()
 
-      msg_guardianAngel = guardian_angel_pb2.GuardianAngel()
-      # msg_guardianAngel.warning = self.offenderDetector_Detected and self.victimDetector_Detected
-      # self.pub_GuardianAngel.send(msg_guardianAngel)
+      # self.warning = self.offenderDetector_Detected and self.victimDetector_Detected
+      self.warning = self.offenderDetector_Detected
 
-      ####
+      msg_guardianAngel = guardian_angel_pb2.GuardianAngel()
+
       pb_msg = samples.indicator_request.Arbitration.IndicatorRequest_pb2.IndicatorRequest()
       pb_msg.indicator_request = pb_msg.Indicator.IS_OFF
       msg_guardianAngel.warning = False
       
-      if self.offenderDetector_Detected and self.victimDetector_Detected:
+      if self.warning:
         pb_msg.indicator_request = pb_msg.Indicator.IS_BOTH
         msg_guardianAngel.warning = True
 
-        
-      #self.pub_GuardianAngel.send(msg_guardianAngel)
+      self.pub_GuardianAngel.send(msg_guardianAngel)
       self.pub_turnIndicator.send(pb_msg)
       
       time.sleep(0.5)
 
-    
     # finalize eCAL API
     ecal_core.finalize()
-    
+  
+  def car2car_loop(self):
+    while True:
+      self.mqtt.publish("eclipse_sdv_hackathon/car2car/guardian_angel/warning", str(self.warning))
+      time.sleep(0.1)
+
   def callback_OffenderDetector_Detected(self, topic_name, msg, time):
     # print("Debug eCAL callback_OffenderDetector_Detected: {}".format(msg))
     self.offenderDetector_Detected = (msg == "True")
