@@ -101,16 +101,17 @@ class CoordinateTransformer:
 
                 if marker.id in last_x_rot:
                     x_rot = last_x_rot[marker.id] + delta_x_rot
+                    last_x_rot.update({marker.id: x_rot})
                 else:
                     x_rot = delta_x_rot
+                    last_x_rot.update({marker.id: x_current})
 
                 if marker.id in last_y_rot:
                     y_rot = last_y_rot[marker.id] + delta_y_rot
+                    last_y_rot.update({marker.id: y_rot})
                 else:
                     y_rot = delta_y_rot
-
-                last_x_rot.update({marker.id: x_rot})
-                last_y_rot.update({marker.id: y_rot})
+                    last_y_rot.update({marker.id: y_current})
 
                 marker.pose.position.x = x_rot
                 marker.pose.position.y = y_rot
