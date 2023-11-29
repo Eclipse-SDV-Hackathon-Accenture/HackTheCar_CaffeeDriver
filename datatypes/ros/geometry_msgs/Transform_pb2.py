@@ -11,8 +11,8 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from ros.geometry_msgs import Quaternion_pb2 as ros_dot_geometry__msgs_dot_Quaternion__pb2
-from ros.geometry_msgs import Vector3_pb2 as ros_dot_geometry__msgs_dot_Vector3__pb2
+from datatypes.ros.geometry_msgs import Quaternion_pb2 as ros_dot_geometry__msgs_dot_Quaternion__pb2
+from datatypes.ros.geometry_msgs import Vector3_pb2 as ros_dot_geometry__msgs_dot_Vector3__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(

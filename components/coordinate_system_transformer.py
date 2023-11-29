@@ -39,8 +39,9 @@ class CoordinateTransformer:
     self.pub_ROSTrafficParticipantListTransformt = ProtoPublisher("ROSTrafficParticipantListTransformed", MarkerArray.MarkerArray)
 
     self.sub_ROSTrafficParticipantList.set_callback(self.callback_ROSTrafficParticipantList)
-    
 
+    def callback_ROSVehiclePoseTransforms(self):
+      print("Hello")
     
   
   # Callback for receiving messages
