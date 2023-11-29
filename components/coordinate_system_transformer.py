@@ -1,8 +1,8 @@
 import sys
-sys.path.insert(0, '..')
 import time
 import math
 import numpy as np
+sys.path.insert(0, '..')
 import ecal.core.core as ecal_core
 from scipy.spatial.transform import Rotation as R
 from ecal.core.subscriber import ProtoSubscriber
@@ -24,7 +24,7 @@ class CoordinateTransformer:
         self.lidarYaw = 0.0
         self.vehicleYaw = 0.0
 
-        ecal_core.initialize(sys.argv, "Python Protobuf Subscriber")
+        ecal_core.initialize(sys.argv, "Coordinate Transformer")
 
         self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSTrafficParticipantList", MarkerArray.MarkerArray)
         self.sub_ROSVehiclePoseTransforms = ProtoSubscriber("ROSVehiclePoseTransforms", TFMessage.TFMessage)
@@ -64,7 +64,6 @@ class CoordinateTransformer:
                     if(self.lidarYaw != LidarYaw):
                         self.lidarYaw = LidarYaw* (-1.0)
                     
-
   # Callback for receiving messages
     def callback_ROSTrafficParticipantList(self, topic_name, marker_array_proto_msg, time):
         if(len(marker_array_proto_msg.markers) > 0):
