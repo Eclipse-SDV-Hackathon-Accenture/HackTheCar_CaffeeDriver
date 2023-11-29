@@ -1,51 +1,49 @@
 import sys
 import time
-
-sys.path.insert(0, '../..')
+sys.path.insert(0, '..')
 
 import ecal.core.core as ecal_core
 from ecal.core.publisher import StringPublisher
 from ecal.core.subscriber import ProtoSubscriber
+from ecal.core.publisher import ProtoPublisher
 
 import datatypes.ros.visualization_msgs.MarkerArray_pb2 as MarkerArray
+import datatypes.ros.visualization_msgs.Marker_pb2 as Marker
 
-class OffenderDetector:
+class Stub:
   def __init__(self) -> None:
 
-    print("OffenderDetector init...")
+    print("Stub init...")
     
-    self.detected = False
+    ecal_core.initialize(sys.argv, "Python Stub")
 
-    ecal_core.initialize(sys.argv, "Python OffenderDetector")
-
-    # Create a String Publisher that publishes on the topic
-    self.pub_OffenderDetector_Detected = StringPublisher("OffenderDetector.Detected")
-    
-    self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSTrafficParticipantList", MarkerArray.MarkerArray)
-
-    self.sub_ROSTrafficParticipantList.set_callback(self.callback_ROSTrafficParticipantList)
+    self.pub_ROSTrafficParticipantList = ProtoPublisher("ROSTrafficParticipantList", MarkerArray.MarkerArray)
+    # self.pub_ROSTrafficParticipantList = ProtoPublisher("ROSTrafficParticipantList", Marker.Marker)
 
   def run(self) -> None:
     
     while ecal_core.ok():
+
+      markerArray = MarkerArray.MarkerArray()
       
-      self.pub_OffenderDetector_Detected.send(str(self.detected))
-      self.detected = not self.detected
+      marker = Marker.Marker()
+      marker.ns = "car"
+      
+
+      marker2 = Marker.Marker()
+      marker2.ns = "car2"
+
+      # markerArray.extend(marker)
+      markerArray.markers.extend([marker, marker2])
+      
+      self.pub_ROSTrafficParticipantList.send(markerArray)
       
       time.sleep(0.5)
       
     # finalize eCAL API
-    ecal_core.finalize()
-  
-  def callback_ROSTrafficParticipantList(self, topic_name, marker_array_proto_msg, time):
-    ma = marker_array_proto_msg
-    if(len(ma.markers) > 0):
-      for var in ma.markers:
-        if(var.ns == "pedestrian"):
-          print("pedestrian")
-          
+    ecal_core.finalize()          
 
 if __name__ == "__main__":
 
-  offenderDetector = OffenderDetector()
-  offenderDetector.run()
+  stub = Stub()
+  stub.run()

@@ -38,8 +38,9 @@ class VictimDetector:
 
       msg_VictimDetector.detected = self.detected
       self.pub_VictimDetector.send(msg_VictimDetector)
+      self.detected = not self.detected
 
-      time.sleep(0.1)
+      time.sleep(0.12)
       
     # finalize eCAL API
     ecal_core.finalize()
@@ -54,8 +55,7 @@ class VictimDetector:
             if var.pose.position.y < 12 and var.pose.position.y > 0:
               detected = True
         
-        # self.detected = detected
-        self.detected = not self.detected
+        self.detected = detected
           
 if __name__ == "__main__":
 

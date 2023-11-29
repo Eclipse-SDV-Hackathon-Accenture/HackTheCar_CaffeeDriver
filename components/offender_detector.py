@@ -38,8 +38,9 @@ class OffenderDetector:
 
       msg_OfferDetector.detected = self.detected
       self.pub_OffenderDetector.send(msg_OfferDetector)
+      self.detected = not self.detected
 
-      time.sleep(0.1)
+      time.sleep(0.11)
       
     # finalize eCAL API
     ecal_core.finalize()
@@ -56,8 +57,7 @@ class OffenderDetector:
             if var.pose.position.y < 12 and var.pose.position.y > 0:
               detected = True
         
-        # self.detected = detected
-        self.detected = not self.detected
+        self.detected = detected
           
 if __name__ == "__main__":
 

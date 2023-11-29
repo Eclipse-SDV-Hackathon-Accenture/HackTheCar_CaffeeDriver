@@ -21,9 +21,9 @@ which make the Ego car incarnate a Guardian Angel (in the meaning of protecting 
 
 ---   ---   ---   ---   ---   ---   ---
   ----------
-  |Offender|----------->!
-  ----------            ^
-                        |
+  |Offender|-------->   !
+  ----------
+                        ^
     -------   --------- | -------
     |     |   |Ego car| | |     |
     -------   --------- | -------
