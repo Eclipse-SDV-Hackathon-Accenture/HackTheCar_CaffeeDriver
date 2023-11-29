@@ -32,30 +32,27 @@ Our tool uses Car2X communication to detect the presence of the Offender and the
                         O
 ```
 
-## Approach
+## Approach : Detection Algorithm and Warning System
 
-We use the Ego car sensor array to detect the both defined traffic participants:
-the Offender and the Victim.
-The detection includes the selecting the relevant objects and their intention.
-The development of this detection algorythm is separated into two complexity stages:
 
-- Stage 1 with simple static check, if any of both object types (car, pedestrian) is in the defined danger zone
-- Stage 2 with movement vector building to recognise the situation in dynamic sense
+Our tool uses the Ego car sensor array to detect two defined traffic participants: the Offender and the Victim. The detection process includes selecting relevant objects and determining their intentions.
 
-If a potential danger situation is recognized, a warning should be fired.
-The available Ego car is capable to activate the turn signal lights.
-For the hackathon challenge we make use of only this feature.
-Further warning channels and visualization are imaginable:
+The development of the detection algorithm is separated into two complexity stages:
 
-- Car lights to side select warning
-- Car lights to spot the pedestrian to improve the visibility
-- Car2X communication to the Offender to warn over its HMI and possibly prepare or execute a braking
-- The build-in music system to tell the pedestrian about the danger and its direction
-- Anonymized post into the (city traffic) cloud to train the AI and detect potential danger spots
+ - Stage 1: we use a simple static check to determine if either the vehicle or pedestrian is in the defined danger zone. 
+ - Stage 2: we build movement vectors to recognize situations dynamically.
+
+If a potential danger situation is identified, our tool activates a warning system. The available Ego vehicle can activate turn signal lights as a warning to all parties involved.
+In addition to this warning system, other warning channels and visualizations are possible. 
+
+- Using car lights to visually alert traffic participants to the warning, specifically highlighting the pedestrian to improve visibility. 
+- Car-to-car communication  to warn the Offender via their HMI to prepare for, or execute, braking.
+- Our tool could utilize the built-in music system to audibly communicate the danger and its direction to the pedestrian. 
+- Anonymized post into the (city traffic) Cloud to train the AI and detect potential danger spots.
 
 ## Realization
 
-The focus of the realization is to implement the logic of detection of the relevant objects and to fire a warning.
+Our primary focus in the realization of this tool is to implement the logic for detecting relevant objects and triggering a warning system in case of potential danger situations.
 
 ```mermaid
     flowchart LR
