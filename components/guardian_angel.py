@@ -93,7 +93,9 @@ class GuardianAngel:
     # print("Debug eCAL VictimDetector: {}".format(msg.detected))
     self.victimDetector_Detected = msg.detected
 
-
-if __name__ == "__main__":
+def run():
   guardianAngel = GuardianAngel()
   guardianAngel.run()
+
+if __name__ == "__main__":
+  run()

@@ -36,28 +36,22 @@ class OffenderDetector:
     def run(self) -> None:
 
         while ecal_core.ok():
-            # self.pub_OffenderDetector_Detected.send(str(self.detected))
 
             msg_OfferDetector = offender_detector_pb2.OfferDetector()
 
             msg_OfferDetector.detected = self.detected
             self.pub_OffenderDetector.send(msg_OfferDetector)
-            # self.detected = not self.detected
 
-            time.sleep(0.11)
+            time.sleep(0.1)
 
         # finalize eCAL API
         ecal_core.finalize()
 
     def callback_ROSTrafficParticipantList(self, topic_name, marker_array_proto_msg, time) -> None:
-        ma = marker_array_proto_msg
-        self.detected = False
-
-        if self.check_marker(ma):
-            self.detected = True
+        self.detected = self.check_marker(marker_array_proto_msg)
 
     def check_marker(self, ma) -> bool:
-        # detected = False
+        
         if len(ma.markers) > 0:
 
             # marker loop
@@ -67,26 +61,20 @@ class OffenderDetector:
                     continue
 
                 # coordinates filter
-                # print(marker.pose.position.x, marker.pose.position.y)
                 # offender
                 if marker.pose.position.x > parameters.OFFENDER_DANGER_ZONE_LAT_NEAR:
-                    # print("LAT NEAR", marker.pose.position.x, ">", parameters.OFFENDER_DANGER_ZONE_LAT_NEAR)
                     continue
 
                 if marker.pose.position.x < parameters.OFFENDER_DANGER_ZONE_LAT_FAR:
-                    # print("LAT FAR", marker.pose.position.x, "<", parameters.OFFENDER_DANGER_ZONE_LAT_FAR)
                     continue
 
                 if marker.pose.position.y > parameters.OFFENDER_DANGER_ZONE_LONG_FAR:
-                    # print("LONG FAR", marker.pose.position.y, ">", parameters.OFFENDER_DANGER_ZONE_LONG_FAR)
                     continue
 
                 if marker.pose.position.y < parameters.OFFENDER_DANGER_ZONE_LONG_NEAR:
-                    # print("LONG NEAR", marker.pose.position.y, "<", parameters.OFFENDER_DANGER_ZONE_LONG_NEAR)
                     continue
 
                 print("Offender ", marker.id, "detected!")
-                # detected = True
                 return True
 
         return False
