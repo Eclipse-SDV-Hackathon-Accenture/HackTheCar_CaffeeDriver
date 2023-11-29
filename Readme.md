@@ -92,13 +92,13 @@ Both the sensor data and the warning system are provided by the given car over a
 
   subgraph Sensor data
     Car:::given
-            Trace:::given
-            Stub
+    Trace:::given
+    Stub
   end
 
 subgraph Danger detection
 transformer[Coordinates
-            System
+        System
 Transformer]
 offender[Offender
 Detector]
@@ -106,7 +106,7 @@ victim[Victim
 Detector]
 angel[Guardian
 Angel]
-        end
+end
 
 subgraph Warning rising
 car_out[Car]:::given
@@ -216,13 +216,13 @@ or errors early on in the development process.
 
 ````mermaid
     flowchart LR
-Stub -- Stimulation --> Component -- Result --> Evaluation
+  Stub -- Stimulation --> Component -- Result --> Evaluation
 
 ````
 
 ````mermaid
     flowchart LR
-Stub -- Stimulation --> Component1 --> Component2 -- Result --> Evaluation
+  Stub -- Stimulation --> Component1 --> Component2 -- Result --> Evaluation
 
 ````
 
