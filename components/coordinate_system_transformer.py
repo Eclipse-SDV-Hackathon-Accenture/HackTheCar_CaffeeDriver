@@ -79,37 +79,37 @@ class CoordinateTransformer:
                 cos = math.cos(self.vehicleYaw)
 
                 x_current = marker.pose.position.x
-                delta_x = x_current
+                delta_x = 0
 
                 if marker.id in last_x:
-                    delta_x = x_current - last_x.get(marker.id)
+                    delta_x = x_current - last_x[marker.id]
 
                 last_x.update({marker.id: x_current})
 
                 y_current = marker.pose.position.y
-                delta_y = y_current
+                delta_y = 0
 
                 if marker.id in last_y:
-                    delta_y = y_current - last_y.get(marker.id)
+                    delta_y = y_current - last_y[marker.id]
 
                 last_y.update({marker.id: y_current})
 
                 x_rot = delta_x * cos - delta_y * sin
                 y_rot = delta_x * sin + delta_y * cos
 
-                marker.pose.position.x = x_rot
-                marker.pose.position.y = y_rot
+                marker.pose.position.x += x_rot
+                marker.pose.position.y += y_rot
 
-                if marker.id == 22845:
-                    print("----------------")
-                    print(x_current)
-                    print(x_current)
-                    print(cos)
-                    print(delta_x)
-                    print(delta_x * cos)
-                    print(x_rot)
-                    print(self.vehicleYaw)
-                    print(x_rot, y_rot)
+                # if marker.id == 22845:
+                #     print("----------------")
+                #     print(x_current, y_current)
+                #     print(last_x[marker.id], last_y[marker.id])
+                #     print(cos, sin)
+                #     print(delta_x, delta_y)
+                #     print(delta_x * cos, delta_y * sin)
+                #     print(self.vehicleYaw)
+                #     print(x_rot, y_rot)
+                #     print(marker.pose.position.x, marker.pose.position.y)
 
             self.pub_ROSTrafficParticipantListTransformt.send(marker_array_proto_msg)
 
