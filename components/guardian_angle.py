@@ -12,6 +12,7 @@ from ecal.core.subscriber import StringSubscriber
 import datatypes.offender_detector_pb2 as offender_detector_pb2
 import datatypes.victim_detector_pb2 as victim_detector_pb2
 import datatypes.guardian_angle_pb2 as guardian_angle_pb2
+import samples.indicator_request.Arbitration.IndicatorRequest_pb2
 
 class GuardianAngle:
 
@@ -19,6 +20,7 @@ class GuardianAngle:
     print("GuardianAngle init...")
 
     ecal_core.initialize(sys.argv, "Python GuardianAngle")
+    self.pub_turnIndicator = ProtoPublisher("TurnIndicator", samples.indicator_request.Arbitration.IndicatorRequest_pb2.IndicatorRequest)  
 
     self.offenderDetector_Detected = False
     self.victimDetector_Detected = False
@@ -39,10 +41,24 @@ class GuardianAngle:
       print()
 
       msg_guardianAngle = guardian_angle_pb2.GuardianAngle()
-      msg_guardianAngle.warning = self.offenderDetector_Detected and self.victimDetector_Detected
-      self.pub_GuardianAngle.send(msg_guardianAngle)
+      # msg_guardianAngle.warning = self.offenderDetector_Detected and self.victimDetector_Detected
+      # self.pub_GuardianAngle.send(msg_guardianAngle)
 
+      ####
+      pb_msg = samples.indicator_request.Arbitration.IndicatorRequest_pb2.IndicatorRequest()
+      pb_msg.indicator_request = pb_msg.Indicator.IS_OFF
+      msg_guardianAngle.warning = False
+      
+      if self.offenderDetector_Detected and self.victimDetector_Detected:
+        pb_msg.indicator_request = pb_msg.Indicator.IS_BOTH
+        msg_guardianAngle.warning = True
+
+        
+      #self.pub_GuardianAngle.send(msg_guardianAngle)
+      self.pub_turnIndicator.send(pb_msg)
+      
       time.sleep(0.5)
+
     
     # finalize eCAL API
     ecal_core.finalize()
