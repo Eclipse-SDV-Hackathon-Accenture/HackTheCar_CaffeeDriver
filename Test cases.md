@@ -1,6 +1,11 @@
 # Test cases
 
-Motivation...
+The purpose of this Test Cases.md file is to ensure that our code works correctly and produces accurate results. By testing various input scenarios and output cases,
+we can verify the reliability and effectiveness of our code. Furthermore, documenting these tests allows us to easily reproduce them in the future and catch any potential regressions or issues that may arise. 
+Conducting thorough testing increases confidence in the performance of our code and helps identify and address any bugs or errors early on. This, in turn, improves the overall quality and usability of the Code.
+Therefore, we have compiled a set of test cases in the following table. Each test case outlines the components, the expected output, and the steps necessary to validate the results. These tests will help us ensure that our code performs as expected in different scenarios and conditions.
+<br><br><br>
+
 
 | TC  | Component | Stimulation   | Expected result  |
 |----------------|-------------------|----------------------------------------------------------------|----------------------------|
