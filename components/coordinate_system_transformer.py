@@ -1,18 +1,16 @@
-import math
 import sys
-import time
-
 sys.path.insert(0, '..')
+import time
+import math
+import numpy as np
 import ecal.core.core as ecal_core
+from scipy.spatial.transform import Rotation as R
 from ecal.core.subscriber import ProtoSubscriber
 from ecal.core.publisher import ProtoPublisher
 import datatypes.ros.visualization_msgs.MarkerArray_pb2 as MarkerArray
 import datatypes.ros.tf2_msgs.TFMessage_pb2 as TFMessage
 
-last_x = {}
-last_x_rot = {}
-last_y = {}
-last_y_rot = {}
+
 
 
 class CoordinateTransformer:
@@ -23,10 +21,13 @@ class CoordinateTransformer:
         self.transformationX = 0.0
         self.transformationY = 0.0
         self.transformationZ = 0.0
+        self.rotationx = math.radians(-0.5)
+        self.rotationy = math.radians(1.0)
+        self.rotationz = math.radians(68.4 - 177.5)
         self.lidarYaw = 0.0
         self.vehicleYaw = 0.0
 
-        ecal_core.initialize(sys.argv, "Coordinate Transformer")
+        ecal_core.initialize(sys.argv, "Python Protobuf Subscriber")
 
         self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSTrafficParticipantList", MarkerArray.MarkerArray)
         self.sub_ROSVehiclePoseTransforms = ProtoSubscriber("ROSVehiclePoseTransforms", TFMessage.TFMessage)
@@ -48,7 +49,8 @@ class CoordinateTransformer:
                         transform.transform.rotation.z,
                         transform.transform.rotation.w)[2]
                     if(self.vehicleYaw != vehicleYaw):
-                        self.vehicleYaw = vehicleYaw * (-1.0)
+                        self.vehicleYaw = vehicleYaw
+                        
                     
                     self.transformationX = transform.transform.translation.x
                     self.transformationY = transform.transform.translation.y
@@ -64,69 +66,21 @@ class CoordinateTransformer:
                         transform.transform.rotation.z,
                         transform.transform.rotation.w)[2]
                     if(self.lidarYaw != LidarYaw):
-                        self.lidarYaw = LidarYaw * (-1.0)
+                        self.lidarYaw = LidarYaw
                     
+
   # Callback for receiving messages
     def callback_ROSTrafficParticipantList(self, topic_name, marker_array_proto_msg, time):
+        vcar = [ self.transformationX ,  self.transformationY,  self.transformationZ]
+        r = R.from_euler('z', math.degrees(-self.vehicleYaw), degrees=True)
+        vcar = r.apply(vcar)
         if(len(marker_array_proto_msg.markers) > 0):
             for marker in marker_array_proto_msg.markers:
-                # v = [ marker.pose.position.x - self.transformationX,  marker.pose.position.y - self.transformationY,  marker.pose.position.z - self.transformationZ]
-                # r = R.from_quat([0, 0, np.sin(self.lidarYaw + self.vehicleYaw), np.cos(self.lidarYaw + self.vehicleYaw)])
-                # v = r.apply(v)
-
-                # marker.pose.position.x = v[0]
-                # marker.pose.position.y = v[1]
-                # marker.pose.position.z = v[2]
-                sin = math.sin(self.vehicleYaw)
-                cos = math.cos(self.vehicleYaw)
-
-                x_current = marker.pose.position.x
-                delta_x = 0
-
-                if marker.id in last_x:
-                    delta_x = x_current - last_x[marker.id]
-
-                last_x.update({marker.id: x_current})
-
-                y_current = marker.pose.position.y
-                delta_y = 0
-
-                if marker.id in last_y:
-                    delta_y = y_current - last_y[marker.id]
-
-                last_y.update({marker.id: y_current})
-
-                delta_x_rot = delta_x * cos - delta_y * sin
-                delta_y_rot = delta_x * sin + delta_y * cos
-
-                if marker.id in last_x_rot:
-                    x_rot = last_x_rot[marker.id] + delta_x_rot
-                    last_x_rot.update({marker.id: x_rot})
-                else:
-                    x_rot = delta_x_rot
-                    last_x_rot.update({marker.id: x_current})
-
-                if marker.id in last_y_rot:
-                    y_rot = last_y_rot[marker.id] + delta_y_rot
-                    last_y_rot.update({marker.id: y_rot})
-                else:
-                    y_rot = delta_y_rot
-                    last_y_rot.update({marker.id: y_current})
-
-                marker.pose.position.x = x_rot
-                marker.pose.position.y = y_rot
-
-                if marker.id == 22845:
-                    print("----------------")
-                    print(x_current, y_current)
-                    print(last_x[marker.id], last_y[marker.id])
-                    print(cos, sin)
-                    print(delta_x, delta_y)
-                    print(delta_x * cos, delta_y * sin)
-                    print(self.vehicleYaw)
-                    print(delta_x_rot, delta_y_rot)
-                    print(x_rot, y_rot)
-                    print(marker.pose.position.x, marker.pose.position.y)
+                v = [ marker.pose.position.x ,  marker.pose.position.y,  marker.pose.position.z]
+                v = r.apply(v)
+                marker.pose.position.x = v[0] - vcar[0]
+                marker.pose.position.y = v[1] - vcar[1]
+                marker.pose.position.z = v[2] - vcar[2]
 
             self.pub_ROSTrafficParticipantListTransformt.send(marker_array_proto_msg)
 
