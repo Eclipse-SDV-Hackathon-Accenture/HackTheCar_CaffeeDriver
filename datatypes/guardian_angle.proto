@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package pb;
 
-message Coordinator
+message GuardianAngle
 {
   bool               warning            =  1;
 }
