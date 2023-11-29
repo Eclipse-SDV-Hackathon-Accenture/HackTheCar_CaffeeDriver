@@ -1,17 +1,16 @@
-import sys
-sys.path.insert(0, '..')
-import time
 import math
-import copy
-import numpy as np
+import sys
+import time
+
+sys.path.insert(0, '..')
 import ecal.core.core as ecal_core
-from scipy.spatial.transform import Rotation as R
 from ecal.core.subscriber import ProtoSubscriber
 from ecal.core.publisher import ProtoPublisher
 import datatypes.ros.visualization_msgs.MarkerArray_pb2 as MarkerArray
 import datatypes.ros.tf2_msgs.TFMessage_pb2 as TFMessage
 
-
+last_x = {}
+last_y = {}
 
 
 class CoordinateTransformer:
@@ -22,13 +21,10 @@ class CoordinateTransformer:
         self.transformationX = 0.0
         self.transformationY = 0.0
         self.transformationZ = 0.0
-        self.rotationx = math.radians(-0.5)
-        self.rotationy = math.radians(1.0)
-        self.rotationz = math.radians(68.4 - 177.5)
         self.lidarYaw = 0.0
         self.vehicleYaw = 0.0
 
-        ecal_core.initialize(sys.argv, "Python Protobuf Subscriber")
+        ecal_core.initialize(sys.argv, "Coordinate Transformer")
 
         self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSTrafficParticipantList", MarkerArray.MarkerArray)
         self.sub_ROSVehiclePoseTransforms = ProtoSubscriber("ROSVehiclePoseTransforms", TFMessage.TFMessage)
@@ -68,12 +64,34 @@ class CoordinateTransformer:
                     if(self.lidarYaw != LidarYaw):
                         self.lidarYaw = LidarYaw * (-1.0)
                     
-
   # Callback for receiving messages
     def callback_ROSTrafficParticipantList(self, topic_name, marker_array_proto_msg, time):
         if(len(marker_array_proto_msg.markers) > 0):
             for marker in marker_array_proto_msg.markers:
-                markers = marker
+                # v = [ marker.pose.position.x - self.transformationX,  marker.pose.position.y - self.transformationY,  marker.pose.position.z - self.transformationZ]
+                # r = R.from_quat([0, 0, np.sin(self.lidarYaw + self.vehicleYaw), np.cos(self.lidarYaw + self.vehicleYaw)])
+                # v = r.apply(v)
+
+                # marker.pose.position.x = v[0]
+                # marker.pose.position.y = v[1]
+                # marker.pose.position.z = v[2]
+                sin = math.sin(self.vehicleYaw)
+                cos = math.cos(self.vehicleYaw)
+
+                x_current = marker.pose.position.x
+                last_x.update(x_current)
+                delta_x = marker.x - last_x[marker.id]
+
+                y_current = marker.pose.position.y
+                last_y.update(y_current)
+                delta_y = marker.y - last_y[marker.id]
+
+                x_rot = delta_x * cos - delta_y * sin
+                y_rot = delta_x * sin + delta_y * cos
+
+                marker.pose.position.x = x_rot
+                marker.pose.position.y = y_rot
+
             self.pub_ROSTrafficParticipantListTransformt.send(marker_array_proto_msg)
 
     def run(self) -> None:
