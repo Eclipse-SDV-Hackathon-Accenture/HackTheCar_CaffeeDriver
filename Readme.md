@@ -1,18 +1,19 @@
 # Hack the Car by Coffee Driver (IAV)
 
-## Idea
+## Idea for Our Tool: Warning Traffic Participants of Danger Situations using Car2X Communication
 
-We want to warn the traffic participants, if a danger situation can arise. 
-For purposes of SDV Hackathon 2023 challenge we cover only one scenario.
+The idea for our tool comes from recognizing the need to improve communication between vehicles on the road. Specifically, we aim to address the issue of potential danger situations arising when interacting with other road users.To achieve this, we have developed a tool that uses Car2X communication to warn traffic participants if a danger situation can arise.  
+By providing clear and timely communication to other road users, we believe we can increase safety and reduce the number of accidents on the road. We recognize the importance of efficient and effective communication and strive to contribute to the development of a safer transportation system.
+We have chosen to focus on one specific scenario for the SDV Hackathon 2023 challenge due to the limited timeframe.
+
+
 
 ## Covered scenario
 
-Assumed the target car (Ego car) is parked on the street shoulder, we want to detect, 
-if, at the same time, a pedestrian is about to walk across the street for or behind the Ego car
-and a car (Offender) passes the Ego car.
-In this case can the pedestrian be harmed by the passed car.
-To prevent it both traffic participants should be warned by the Ego car,
-which make the Ego car incarnate a Guardian Angel (in the meaning of protecting the pedestrian).
+The scenario we have chosen to focus on for the SDV Hackathon 2023 challenge involves a pedestrian about to cross the street in front of or behind the Ego vehicle while another vehicle (Offender) is passing through. In this situation, there is a risk of an accident occurring if both the Offender and the pedestrian are not aware of each other's presence.
+To prevent this from happening and increase road safety, our tool is designed to activate the indicator lights in the Ego vehicle as a warning signal. This warning signal will alert both the Offender and the pedestrian of the potential danger and allow them to take appropriate actions to avoid an accident.
+Our tool uses Car2X communication to detect the presence of the Offender and the pedestrian and determine their positions relative to the Ego vehicle. If both are present at the same time, the tool triggers the indicator lights in the Ego vehicle. This feature is designed to provide a clear and timely warning to all parties involved and reduce the risk of accidents.
+
 
 ```
 =======================================
