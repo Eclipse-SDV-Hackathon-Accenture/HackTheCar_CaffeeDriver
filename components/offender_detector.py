@@ -62,16 +62,16 @@ class OffenderDetector:
 
                 # coordinates filter
                 # offender
-                if marker.pose.position.x > parameters.OFFENDER_DANGER_ZONE_LAT_NEAR:
+                if marker.pose.position.x > parameters.OFFENDER_DANGER_ZONE_LONG_NEAR:
                     continue
 
-                if marker.pose.position.x < parameters.OFFENDER_DANGER_ZONE_LAT_FAR:
+                if marker.pose.position.x < parameters.OFFENDER_DANGER_ZONE_LONG_FAR:
                     continue
 
-                if marker.pose.position.y > parameters.OFFENDER_DANGER_ZONE_LONG_FAR:
+                if marker.pose.position.y > parameters.OFFENDER_DANGER_ZONE_LAT_FAR:
                     continue
 
-                if marker.pose.position.y < parameters.OFFENDER_DANGER_ZONE_LONG_NEAR:
+                if marker.pose.position.y < parameters.OFFENDER_DANGER_ZONE_LAT_NEAR:
                     continue
 
                 print("Offender ", marker.id, "detected!")

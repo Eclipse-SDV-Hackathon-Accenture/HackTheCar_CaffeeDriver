@@ -4,7 +4,6 @@ import time
 sys.path.insert(0, '..')
 
 import ecal.core.core as ecal_core
-from ecal.core.publisher import StringPublisher
 from ecal.core.subscriber import ProtoSubscriber
 from ecal.core.publisher import ProtoPublisher
 
@@ -61,19 +60,19 @@ class VictimDetector:
                 # coordinates filter
                 # victim
                 if marker.pose.position.x > parameters.VICTIM_DANGER_ZONE_LONG_NEAR:
-                    print(marker.pose.position.x, " > ", parameters.VICTIM_DANGER_ZONE_LONG_NEAR)
+                    print(marker.pose.position.x, " > ", parameters.VICTIM_DANGER_ZONE_LAT_NEAR)
                     continue
 
                 if marker.pose.position.x < parameters.VICTIM_DANGER_ZONE_LONG_FAR:
-                    print(marker.pose.position.x, " < ", parameters.VICTIM_DANGER_ZONE_LONG_FAR)
+                    print(marker.pose.position.x, " < ", parameters.VICTIM_DANGER_ZONE_LAT_FAR)
                     continue
 
                 if marker.pose.position.y > parameters.VICTIM_DANGER_ZONE_LAT_FAR:
-                    print(marker.pose.position.y, " > ", parameters.VICTIM_DANGER_ZONE_LAT_FAR)
+                    print(marker.pose.position.y, " > ", parameters.VICTIM_DANGER_ZONE_LONG_FAR)
                     continue
 
                 if marker.pose.position.y < parameters.VICTIM_DANGER_ZONE_LAT_NEAR:
-                    print(marker.pose.position.y, " < ", parameters.VICTIM_DANGER_ZONE_LAT_NEAR)
+                    print(marker.pose.position.y, " < ", parameters.VICTIM_DANGER_ZONE_LONG_NEAR)
                     continue
 
                 self.detected = True
