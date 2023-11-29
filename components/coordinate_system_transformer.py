@@ -13,6 +13,7 @@ from ecal.core.publisher import ProtoPublisher
 # Import the "datatypes.ros.visualization_msgs.MarkerArray_pb2.py" file that we have just generated from the
 # datatypes directory 
 import datatypes.ros.visualization_msgs.MarkerArray_pb2 as MarkerArray
+import datatypes.ros.tf2_msgs.TFMessage_pb2 as TFMessage
 
 
 class CoordinateTransformer:
@@ -33,9 +34,13 @@ class CoordinateTransformer:
     ecal_core.initialize(sys.argv, "Python Protobuf Subscriber")
 
     self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSTrafficParticipantList", MarkerArray.MarkerArray)
+    self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSVehiclePoseTransforms", TFMessage.TFMessage)
+
+    self.pub_ROSTrafficParticipantListTransformt = ProtoPublisher("ROSTrafficParticipantListTransformted", MarkerArray.MarkerArray)
+
     self.sub_ROSTrafficParticipantList.set_callback(self.callback_ROSTrafficParticipantList)
 
-    self.pub_ROSTrafficParticipantListTransformt = ProtoPublisher("ROSTrafficParticipantListTransformt", MarkerArray.MarkerArray)
+    
   
   # Callback for receiving messages
   def callback_ROSTrafficParticipantList(self,topic_name, marker_array_proto_msg, time):
