@@ -11,8 +11,8 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from ros.geometry_msgs import Transform_pb2 as ros_dot_geometry__msgs_dot_Transform__pb2
-from ros.std_msgs import Header_pb2 as ros_dot_std__msgs_dot_Header__pb2
+from datatypes.ros.geometry_msgs import Transform_pb2 as ros_dot_geometry__msgs_dot_Transform__pb2
+from datatypes.ros.std_msgs import Header_pb2 as ros_dot_std__msgs_dot_Header__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
