@@ -34,11 +34,12 @@ class CoordinateTransformer:
     ecal_core.initialize(sys.argv, "Python Protobuf Subscriber")
 
     self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSTrafficParticipantList", MarkerArray.MarkerArray)
-    self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSVehiclePoseTransforms", TFMessage.TFMessage)
+    self.sub_ROSVehiclePoseTransforms = ProtoSubscriber("ROSVehiclePoseTransforms", TFMessage.TFMessage)
 
-    self.pub_ROSTrafficParticipantListTransformt = ProtoPublisher("ROSTrafficParticipantListTransformted", MarkerArray.MarkerArray)
+    self.pub_ROSTrafficParticipantListTransformt = ProtoPublisher("ROSTrafficParticipantListTransformed", MarkerArray.MarkerArray)
 
     self.sub_ROSTrafficParticipantList.set_callback(self.callback_ROSTrafficParticipantList)
+    
 
     
   
