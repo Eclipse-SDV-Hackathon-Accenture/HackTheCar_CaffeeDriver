@@ -2,6 +2,7 @@ import sys
 sys.path.insert(0, '..')
 import time
 import math
+import copy
 import numpy as np
 import ecal.core.core as ecal_core
 from scipy.spatial.transform import Rotation as R
@@ -65,21 +66,14 @@ class CoordinateTransformer:
                         transform.transform.rotation.z,
                         transform.transform.rotation.w)[2]
                     if(self.lidarYaw != LidarYaw):
-                        self.lidarYaw = LidarYaw* (-1.0)
+                        self.lidarYaw = LidarYaw * (-1.0)
                     
 
   # Callback for receiving messages
     def callback_ROSTrafficParticipantList(self, topic_name, marker_array_proto_msg, time):
         if(len(marker_array_proto_msg.markers) > 0):
             for marker in marker_array_proto_msg.markers:
-                v = [ marker.pose.position.x - self.transformationX,  marker.pose.position.y - self.transformationY,  marker.pose.position.z - self.transformationZ]
-                r = R.from_quat([0, 0, np.sin(self.lidarYaw + self.vehicleYaw), np.cos(self.lidarYaw + self.vehicleYaw)])
-                v = r.apply(v)
-
-                marker.pose.position.x = v[0]
-                marker.pose.position.y = v[1]
-                marker.pose.position.z = v[2]
-
+                markers = marker
             self.pub_ROSTrafficParticipantListTransformt.send(marker_array_proto_msg)
 
     def run(self) -> None:
