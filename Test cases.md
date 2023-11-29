@@ -9,8 +9,8 @@ Therefore, we have compiled a set of test cases in the following table. Each tes
 
 | TC  | Component | Stimulation   | Expected result  |
 |----------------|-------------------|----------------------------------------------------------------|----------------------------|
-| Case 1: Valid Coordinates Inside Warning Area  | Offender Detector | x = 5, y = 10 (coordinates inside the warning area)            | Offender detected|
-| Case 2: Valid Coordinates Outside Warning Area | Offender Detector | x = -3, y = 10 (coordinates outside the warning area)          | Offender not detected|
+| Case 1: Valid Coordinates Inside Warning Area  | Offender Detector | x = 5, y = 10 (coordinates outside the warning area)            | Offender not detected|
+| Case 2: Valid Coordinates Outside Warning Area | Offender Detector | x = -3, y = 10 (coordinates inside the warning area)          | Offender not detected|
 | Case 3: Invalid Coordinate data type           | Offender Detector | x = "hello", y = "world" (invalid string coordinates)          | Error message |
 | Case 4: Borderline Coordinates                 | Offender Detector | x = 25, y = 50 (coordinates on the border of the warning area) | Offender detected|
 | Case 5: Borderline Coordinates                 | Offender Detector | x = 25, y = 50 (coordinates on the border of the warning area) | Offender detected|
