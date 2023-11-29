@@ -79,18 +79,37 @@ class CoordinateTransformer:
                 cos = math.cos(self.vehicleYaw)
 
                 x_current = marker.pose.position.x
-                last_x.update(x_current)
-                delta_x = marker.x - last_x[marker.id]
+                delta_x = x_current
+
+                if marker.id in last_x:
+                    delta_x = x_current - last_x.get(marker.id)
+
+                last_x.update({marker.id: x_current})
 
                 y_current = marker.pose.position.y
-                last_y.update(y_current)
-                delta_y = marker.y - last_y[marker.id]
+                delta_y = y_current
+
+                if marker.id in last_y:
+                    delta_y = y_current - last_y.get(marker.id)
+
+                last_y.update({marker.id: y_current})
 
                 x_rot = delta_x * cos - delta_y * sin
                 y_rot = delta_x * sin + delta_y * cos
 
                 marker.pose.position.x = x_rot
                 marker.pose.position.y = y_rot
+
+                if marker.id == 22845:
+                    print("----------------")
+                    print(x_current)
+                    print(x_current)
+                    print(cos)
+                    print(delta_x)
+                    print(delta_x * cos)
+                    print(x_rot)
+                    print(self.vehicleYaw)
+                    print(x_rot, y_rot)
 
             self.pub_ROSTrafficParticipantListTransformt.send(marker_array_proto_msg)
 
