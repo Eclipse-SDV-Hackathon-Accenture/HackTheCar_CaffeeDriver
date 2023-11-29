@@ -11,8 +11,6 @@ import datatypes.ros.visualization_msgs.MarkerArray_pb2 as MarkerArray
 import datatypes.ros.tf2_msgs.TFMessage_pb2 as TFMessage
 
 
-
-
 class CoordinateTransformer:
     def __init__(self) -> None:
 
@@ -46,7 +44,8 @@ class CoordinateTransformer:
                         transform.transform.rotation.z,
                         transform.transform.rotation.w)[2]
                     if(self.vehicleYaw != vehicleYaw):
-                        self.vehicleYaw = vehicleYaw * (-1.0)
+                        self.vehicleYaw = vehicleYaw
+                        
                     
                     self.transformationX = transform.transform.translation.x
                     self.transformationY = transform.transform.translation.y
@@ -62,19 +61,20 @@ class CoordinateTransformer:
                         transform.transform.rotation.z,
                         transform.transform.rotation.w)[2]
                     if(self.lidarYaw != LidarYaw):
-                        self.lidarYaw = LidarYaw* (-1.0)
+                        self.lidarYaw = LidarYaw
                     
   # Callback for receiving messages
     def callback_ROSTrafficParticipantList(self, topic_name, marker_array_proto_msg, time):
+        vcar = [ self.transformationX ,  self.transformationY,  self.transformationZ]
+        r = R.from_euler('z', math.degrees(-self.vehicleYaw), degrees=True)
+        vcar = r.apply(vcar)
         if(len(marker_array_proto_msg.markers) > 0):
             for marker in marker_array_proto_msg.markers:
-                v = [ marker.pose.position.x - self.transformationX,  marker.pose.position.y - self.transformationY,  marker.pose.position.z - self.transformationZ]
-                r = R.from_quat([0, 0, np.sin(self.lidarYaw + self.vehicleYaw), np.cos(self.lidarYaw + self.vehicleYaw)])
+                v = [ marker.pose.position.x ,  marker.pose.position.y,  marker.pose.position.z]
                 v = r.apply(v)
-
-                marker.pose.position.x = v[0]
-                marker.pose.position.y = v[1]
-                marker.pose.position.z = v[2]
+                marker.pose.position.x = v[0] - vcar[0]
+                marker.pose.position.y = v[1] - vcar[1]
+                marker.pose.position.z = v[2] - vcar[2]
 
             self.pub_ROSTrafficParticipantListTransformt.send(marker_array_proto_msg)
 

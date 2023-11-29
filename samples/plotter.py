@@ -45,7 +45,7 @@ class Plot:
         ma = marker_array_proto_msg
         if(len(ma.markers) > 0):
             for var in ma.markers:
-                if(var.ns == "pedestrian"):
+                if(var.ns == "pedestrian"): #pedestrian
                     if var.id in self.MarkerValues:
                         self.MarkerValues[var.id]["timestamp"].append(var.header.stamp.sec + (var.header.stamp.nsec*(10**(-9))))
                         self.MarkerValues[var.id]["x_values"].append(var.pose.position.x)
