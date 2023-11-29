@@ -21,9 +21,6 @@ class CoordinateTransformer:
         self.transformationX = 0.0
         self.transformationY = 0.0
         self.transformationZ = 0.0
-        self.rotationx = math.radians(-0.5)
-        self.rotationy = math.radians(1.0)
-        self.rotationz = math.radians(68.4 - 177.5)
         self.lidarYaw = 0.0
         self.vehicleYaw = 0.0
 
