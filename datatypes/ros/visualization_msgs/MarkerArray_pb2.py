@@ -23,9 +23,6 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   ,
   dependencies=[ros_dot_visualization__msgs_dot_Marker__pb2.DESCRIPTOR,])
 
-
-
-
 _MARKERARRAY = _descriptor.Descriptor(
   name='MarkerArray',
   full_name='ros.visualization_msgs.MarkerArray',
