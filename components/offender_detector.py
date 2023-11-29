@@ -40,7 +40,7 @@ class OffenderDetector:
       self.pub_OffenderDetector.send(msg_OfferDetector)
       self.detected = not self.detected
 
-      time.sleep(0.1)
+      time.sleep(0.11)
       
     # finalize eCAL API
     ecal_core.finalize()

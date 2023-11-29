@@ -40,7 +40,7 @@ class VictimDetector:
       self.pub_VictimDetector.send(msg_VictimDetector)
       self.detected = not self.detected
 
-      time.sleep(0.1)
+      time.sleep(0.12)
       
     # finalize eCAL API
     ecal_core.finalize()
