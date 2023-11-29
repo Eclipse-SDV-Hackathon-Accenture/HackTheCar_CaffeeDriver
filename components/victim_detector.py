@@ -25,7 +25,6 @@ class VictimDetector:
         # Create a String Publisher that publishes on the topic
         # self.pub_VictimDetector_Detected = StringPublisher("VictimDetector.Detected")
         self.pub_VictimDetector = ProtoPublisher("VictimDetector", victim_detector_pb2.VictimDetector)
-
         self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSTrafficParticipantList", MarkerArray.MarkerArray)
 
         self.sub_ROSTrafficParticipantList.set_callback(self.callback_ROSTrafficParticipantList)

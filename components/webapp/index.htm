@@ -1,0 +1,115 @@
+<html>
+
+<head>
+    <style>
+        body {
+            /* background-color: #4C4C4C; */
+            /* color: #F1F1F1; */
+        }
+    </style>
+</head>
+
+<body>
+
+    <img id="img1" src="imgs/car_back.png" style="float: right;" />
+    <img id="img2" src="imgs/car_back_indicator.png" style="float: right;" />
+    
+
+    <script type="text/javascript">
+        var config = {
+            'host': ''
+        };
+
+        var warning = true;
+
+        
+
+        function app_init() {
+
+            connect();
+
+
+        }
+
+
+        var ws;
+
+        function updateWebSignals(key, value) {
+            let elemetns = document.querySelectorAll("[signal='" + key + "']");
+            for (i = 0; i < elemetns.length; ++i) {
+                let el = elemetns[i];
+
+                val = value;
+
+                signal_round_decimal = el.getAttribute('signal_round_decimal');
+                if (signal_round_decimal != null && signal_round_decimal >= 0) {
+                    val = parseFloat(value).toFixed(signal_round_decimal);
+                }
+
+                if (['SPAN', 'DIV', 'LI'].includes(el.nodeName)) {
+                    el.innerHTML = val;
+                }
+                else if (el.nodeName == 'INPUT' /* && el.type == 'slider'*/) {
+                    el.value = val;
+                }
+                else if (el.nodeName == 'SELECT') {
+                    el.value = val;
+                }
+            }
+        }
+
+        function connect() {
+            ws = new WebSocket('ws://' + location.host + '/');
+            ws.onopen = function () {
+                // subscribe to some channels
+                ws.send(JSON.stringify({
+                    //.... some message the I must send when I connect ....
+                }));
+            };
+
+            var img1 = document.getElementById('img1');
+            var img2 = document.getElementById('img2');
+            
+            ws.onmessage = function (e) {
+                console.log('ws Message:', e.data);
+
+                let msg = JSON.parse(e.data);
+
+                if (msg.event == 'Signals') {
+
+                    warning = false;
+                    if ('warning' in msg.data) {
+                        warning = msg.data['warning']
+                    }
+                    if (!warning) {
+                        img1.style.display = 'inline';
+                        img2.style.display = 'none';
+                    }
+                    else {
+                        img1.style.display = 'none';
+                        img2.style.display = 'inline';
+                    }
+                }
+            };
+
+            ws.onclose = function (e) {
+                console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+                setTimeout(function () {
+                    connect();
+                }, 1000);
+            };
+
+            ws.onerror = function (err) {
+                console.error('Socket encountered error: ', err.message, 'Closing socket');
+                ws.close();
+            };
+        }
+
+
+        app_init();
+
+    </script>
+
+</body>
+
+</html>

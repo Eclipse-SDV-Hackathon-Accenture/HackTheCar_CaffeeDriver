@@ -22,8 +22,8 @@ class GuardianAngel:
   def __init__(self) -> None:
     print("GuardianAngel init...")
 
-    # self.mqtt = mqtt.Client()
-    # self.mqtt.connect("localhost",1883)
+    self.mqtt = mqtt.Client()
+    self.mqtt.connect("localhost",1883)
                   
     ecal_core.initialize(sys.argv, "Python GuardianAngel")
     self.pub_turnIndicator = ProtoPublisher("TurnIndicator", samples.indicator_request.Arbitration.IndicatorRequest_pb2.IndicatorRequest)  
@@ -42,8 +42,8 @@ class GuardianAngel:
 
   def run(self):
 
-    # thrad_car2car = threading.Thread(target=self.car2car_loop)
-    # thrad_car2car.start()
+    thrad_car2car = threading.Thread(target=self.car2car_loop)
+    thrad_car2car.start()
 
     while ecal_core.ok():
 
