@@ -83,3 +83,45 @@ Both the sensor data and the warning system are provided by the given car over a
         victim -- victim detected--> warning
         Car & Trace --Signals--> state --Car state --> warning
 ```
+
+### Sensor data feeding
+
+For purposes of the development we used both the trace recorded while simulating of a set of sub-scenarios
+and an implemented stub to feed objects in the Ego car environment.
+
+Our covered scenario contains detection of two traffic participants.
+For understanding of world representation with provided sensor data
+two isolated traces was recorded in addition to complete one:
+
+- Movement of the passing car (Offender)
+- Movement of the Pedestrian (Victim)
+  - inclusive a movement around the Ego car to determine its dimensions
+- Simultaneous movement of both the Offender and the Victim
+
+### Coordinate system transformation
+
+Provided trace data contains coordinates in a system placed in the world.
+The axes of the world-related coordinate system can,
+but not have to be parallel to same axes of the car-related coordinate system.
+
+To detect the parallelism of the Offender trajectory
+a coordinate system transformation is necessary.
+The offset and the angles of rotation for all three coordinates are
+provided by the car abstraction layer.
+
+### Integration of the Guardian Angel components
+
+Transfer of the data from and to the components is
+
+eCAL messages
+
+protobuf-format
+
+Visualization
+
+### Testing
+
+### Performing of the warning
+
+### Visualization
+

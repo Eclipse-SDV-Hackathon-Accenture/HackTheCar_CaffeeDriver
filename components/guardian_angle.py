@@ -11,19 +11,19 @@ from ecal.core.subscriber import StringSubscriber
 
 import datatypes.offender_detector_pb2 as offender_detector_pb2
 import datatypes.victim_detector_pb2 as victim_detector_pb2
-import datatypes.coordinator_pb2 as coordinator_pb2
+import datatypes.guardian_angle_pb2 as guardian_angle_pb2
 
-class Coordinator:
+class GuardianAngle:
 
   def __init__(self) -> None:
-    print("Coordinator init...")
+    print("GuardianAngle init...")
 
-    ecal_core.initialize(sys.argv, "Python Coordinator")
+    ecal_core.initialize(sys.argv, "Python GuardianAngle")
 
     self.offenderDetector_Detected = False
     self.victimDetector_Detected = False
     
-    self.pub_Coordinator = ProtoPublisher("Coordinator", coordinator_pb2.Coordinator)
+    self.pub_GuardianAngle = ProtoPublisher("GuardianAngle", guardian_angle_pb2.GuardianAngle)
 
     self.sub_OfferDetector = ProtoSubscriber("OffenderDetector", offender_detector_pb2.OfferDetector)
     self.sub_VictimDetector = ProtoSubscriber("VictimDetector", victim_detector_pb2.VictimDetector)
@@ -38,13 +38,10 @@ class Coordinator:
       print(f'victimDetector_Detected: {self.victimDetector_Detected}')
       print()
 
+      msg_guardianAngle = guardian_angle_pb2.GuardianAngle()
+      msg_guardianAngle.warning = self.offenderDetector_Detected and self.victimDetector_Detected
+      self.pub_GuardianAngle.send(msg_guardianAngle)
 
-      msg_coordinator = coordinator_pb2.Coordinator()
-      msg_coordinator.warning = self.offenderDetector_Detected and self.victimDetector_Detected
-      self.pub_Coordinator.send(msg_coordinator)
-
-
-      
       time.sleep(0.5)
     
     # finalize eCAL API
@@ -68,5 +65,5 @@ class Coordinator:
 
 
 if __name__ == "__main__":
-  coordinator = Coordinator()
+  coordinator = GuardianAngle()
   coordinator.run()
