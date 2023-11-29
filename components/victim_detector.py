@@ -24,7 +24,7 @@ class VictimDetector:
         # Create a String Publisher that publishes on the topic
         # self.pub_VictimDetector_Detected = StringPublisher("VictimDetector.Detected")
         self.pub_VictimDetector = ProtoPublisher("VictimDetector", victim_detector_pb2.VictimDetector)
-        self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSTrafficParticipantList", MarkerArray.MarkerArray)
+        self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSTrafficParticipantListTransformed", MarkerArray.MarkerArray)
 
         self.sub_ROSTrafficParticipantList.set_callback(self.callback_ROSTrafficParticipantList)
 
@@ -37,46 +37,47 @@ class VictimDetector:
 
             msg_VictimDetector.detected = self.detected
             self.pub_VictimDetector.send(msg_VictimDetector)
-            self.detected = not self.detected
 
-            time.sleep(0.12)
+            time.sleep(0.1)
 
         # finalize eCAL API
         ecal_core.finalize()
 
     def callback_ROSTrafficParticipantList(self, topic_name, marker_array_proto_msg, time):
-        ma = marker_array_proto_msg
+        self.detected = self.check_marker(marker_array_proto_msg)
+    
+    def check_marker(self, ma) -> bool:
         if len(ma.markers) > 0:
-
             # marker loop
             for marker in ma.markers:
-                self.detected = False
 
                 # type filter
                 if marker.ns != "pedestrian":
-                    print("not pedestrian -> drop")
+                    # print("not pedestrian -> drop")
                     continue
-
+                
                 # coordinates filter
                 # victim
-                if marker.pose.position.x > parameters.VICTIM_DANGER_ZONE_LONG_NEAR:
-                    print(marker.pose.position.x, " > ", parameters.VICTIM_DANGER_ZONE_LAT_NEAR)
+                if marker.pose.position.x < parameters.VICTIM_DANGER_ZONE_LONG_NEAR:
+                    print('x ', marker.pose.position.x, " < ", parameters.VICTIM_DANGER_ZONE_LONG_NEAR)
                     continue
 
-                if marker.pose.position.x < parameters.VICTIM_DANGER_ZONE_LONG_FAR:
-                    print(marker.pose.position.x, " < ", parameters.VICTIM_DANGER_ZONE_LAT_FAR)
+                if marker.pose.position.x > parameters.VICTIM_DANGER_ZONE_LONG_FAR:
+                    print('x ', marker.pose.position.x, " > ", parameters.VICTIM_DANGER_ZONE_LONG_FAR)
                     continue
 
                 if marker.pose.position.y > parameters.VICTIM_DANGER_ZONE_LAT_FAR:
-                    print(marker.pose.position.y, " > ", parameters.VICTIM_DANGER_ZONE_LONG_FAR)
+                    print('y ', marker.pose.position.y, " > ", parameters.VICTIM_DANGER_ZONE_LAT_FAR)
                     continue
 
                 if marker.pose.position.y < parameters.VICTIM_DANGER_ZONE_LAT_NEAR:
-                    print(marker.pose.position.y, " < ", parameters.VICTIM_DANGER_ZONE_LONG_NEAR)
+                    print('y ', marker.pose.position.y, " < ", parameters.VICTIM_DANGER_ZONE_LAT_NEAR)
                     continue
 
-                self.detected = True
-                return
+                print("Victim ", marker.id, "detected!")
+                return True
+
+        return False
 
 
 if __name__ == "__main__":
