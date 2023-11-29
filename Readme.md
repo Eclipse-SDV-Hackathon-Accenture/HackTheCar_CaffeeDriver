@@ -48,7 +48,7 @@ Further warning channels and visualization are imaginable:
 
 - Car lights to side select warning
 - Car lights to spot the pedestrian to improve the visibility
-- Car2car communication to the Offender to warn over its HMI and possibly prepare or execute a braking
+- Car2X communication to the Offender to warn over its HMI and possibly prepare or execute a braking
 - The build-in music system to tell the pedestrian about the danger and its direction
 - Anonymized post into the (city traffic) cloud to train the AI and detect potential danger spots
 
@@ -68,20 +68,45 @@ Both the sensor data and the warning system are provided by the given car over a
 ```mermaid
     flowchart LR
         classDef given stroke:#777, fill:#777
-        subgraph Sensor data 
+
+  subgraph Sensor data 
             Car:::given
             Trace:::given
             Stub
         end
-        subgraph Guardian Angel 
-            offender[Offender Detector]
-            victim[Victim Detector]
-            state[Car State Check]
+
+subgraph Danger detection
+transformer[Coordinates
+            System
+Transformer]
+offender[Offender
+Detector]
+victim[Victim
+Detector]
+angel[Guardian
+Angel]
         end
-        Car & Trace & Stub --Markers--> offender & victim
-        offender -- offender detected--> warning[Warning System]:::given
-        victim -- victim detected--> warning
-        Car & Trace --Signals--> state --Car state --> warning
+
+subgraph Warning rising
+car_out[Car]:::given
+Car2X
+end
+
+Car & Trace & Stub --Markers --> transformer
+
+transformer -- Transformed
+marker--> offender & victim
+
+offender -- offender
+detected --> angel
+
+victim -- victim
+detected--> angel
+
+angel -- Light on --> car_out
+
+angel -- Data --> Car2X
+
 ```
 
 ### Sensor data feeding
@@ -111,17 +136,34 @@ provided by the car abstraction layer.
 
 ### Integration of the Guardian Angel components
 
-Transfer of the data from and to the components is
-
-eCAL messages
-
-protobuf-format
-
-Visualization
+Transfer of the data from and to the components is realized with
+eCAL messages containing objects in protobuf-format.
+All components subscribe to certain message topics,
+which gives the possibility to visualize the inter-component communication
+and to inject synthetic messages for testing purposes.
+A stub is developed to provide the message generation with wished values.
 
 ### Testing
 
-### Performing of the warning
+The behavior of every component and the whole system should be tested
+to ensure the correct
+
+The system is developed in a modular architecture with defined data containers (messages).
+So can every component be tested isolated, but as a part of a (sub-)system.
+
+````mermaid
+    flowchart LR
+  Stub -- Stimulation --> Component -- Result --> Evaluation
+
+````
+
+````mermaid
+    flowchart LR
+  Stub -- Stimulation --> Component1 --> Component2 -- Result --> Evaluation
+
+````
+
+### Rising of the warning
 
 ### Visualization
 
