@@ -128,30 +128,24 @@ To detect the parallelism of the Offender trajectory, we require a coordinate sy
 This transformation allows us to accurately determine the position and movement of the Offender relative to the Ego vehicle.Through careful analysis and implementation of these transformations, we can create an effective detection algorithm that accurately identifies potential danger situations and triggers the appropriate warning system.
 ### Integration of the Guardian Angel components
 
-Transfer of the data from and to the components is realized with
-eCAL messages containing objects in protobuf-format.
-All components subscribe to certain message topics,
-which gives the possibility to visualize the inter-component communication
-and to inject synthetic messages for testing purposes.
-A stub is developed to provide the message generation with wished values.
+Transfer of the data from and to the components is realized with eCAL messages that contains objects in protobuf-format.
+All components subscribe to certain message topics, which gives the possibility to visualize the inter-component communication and to inject synthetic messages for testing purposes.
+A stub is developed to facilitate message generation for testing purposes by generating messages with desired values.
 
 ### Testing
 
-The behavior of every component and the whole system should be tested
-to ensure the correct
-
-The system is developed in a modular architecture with defined data containers (messages).
-So can every component be tested isolated, but as a part of a (sub-)system.
+To ensure that our tool functions correctly, it is necessary to test the behavior of each component and the system as a whole.
+The system has been developed in a modular architecture, with defined data containers (messages). As a result, each component can be tested in isolation, but also as part of a subsystem or the entire system. This approach allows us to better understand and address any issues or errors early on in the development process.
 
 ````mermaid
     flowchart LR
-  Stub -- Stimulation --> Component -- Result --> Evaluation
+Stub -- Stimulation --> Component -- Result --> Evaluation
 
 ````
 
 ````mermaid
     flowchart LR
-  Stub -- Stimulation --> Component1 --> Component2 -- Result --> Evaluation
+Stub -- Stimulation --> Component1 --> Component2 -- Result --> Evaluation
 
 ````
 
