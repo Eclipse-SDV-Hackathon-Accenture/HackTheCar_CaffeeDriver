@@ -220,3 +220,12 @@ A [test set](Test cases.md) containing a small amount of test cases and a testin
 For the SDV Hackathon 2023 challenge developed Guardian Angel contains a simple simulation of a Car2X communication.
 To achieve this target a MQTT broker and a consumer component were integrated (provider and subscriber).
 Both components establish a communication channel, which can be used to trigger some warning events or messages.
+
+## Technology Stack
+
+Here are some of the main tools we used to build our project:
+
+- python 3.11
+- eCAL v5.12.1
+- Foxglove Studio v1.79.0
+- MQTT protocol 
