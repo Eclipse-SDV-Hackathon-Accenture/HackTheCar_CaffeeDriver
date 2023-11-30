@@ -85,17 +85,17 @@ Both the sensor data and the warning system are provided by the given car over a
 
 ### Data flow
 
-```mermaid
+````mermaid
     flowchart LR
         classDef given stroke:#777, fill:#777
 
-        subgraph Sensor data
+        subgraph "Sensor data"
             Car:::given
             Trace:::given
             Stub
         end
 
-        subgraph Danger detection
+        subgraph "Danger detection"
             transformer[Coordinate 
             System 
             Transformer]
@@ -107,7 +107,7 @@ Both the sensor data and the warning system are provided by the given car over a
             Angel]
         end
     
-        subgraph Warning rising
+        subgraph "Warning rising"
             car_out[Car]:::given
             Car2X
         end
@@ -125,7 +125,7 @@ Both the sensor data and the warning system are provided by the given car over a
         
         angel -- Light on --> car_out
         angel -- Data --> Car2X
-```
+````
 
 ### Sensor data feeding
 
@@ -214,13 +214,11 @@ or errors early on in the development process.
 ````mermaid
     flowchart LR
         Stub -- Stimulation --> Component -- Result --> Evaluation
-
 ````
 
 ````mermaid
     flowchart LR
         Stub -- Stimulation --> Component1 --> Component2 -- Result --> Evaluation
-
 ````
 
 ### Car2X communication channel
