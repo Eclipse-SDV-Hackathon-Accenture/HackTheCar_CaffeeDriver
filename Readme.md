@@ -86,45 +86,45 @@ Both the sensor data and the warning system are provided by the given car over a
 ### Data flow
 
 ````mermaid
-    flowchart LR
-        classDef given stroke:#777, fill:#777
-
-        subgraph "Sensor data"
-            Car:::given
-            Trace:::given
-            Stub
-        end
-
-        subgraph "Danger detection"
-            transformer[Coordinate 
-            System 
-            Transformer]
-            offender[Offender
-            Detector]
-            victim[Victim
-            Detector]
-            angel[Guardian
-            Angel]
-        end
+        flowchart LR
+            classDef given stroke:#777, fill:#777
     
-        subgraph "Warning rising"
-            car_out[Car]:::given
-            Car2X
-        end
+            subgraph "Sensor data"
+                Car:::given
+                Trace:::given
+                Stub
+            end
     
-        Car & Trace & Stub --Markers --> transformer
+            subgraph "Danger detection"
+                transformer[Coordinate 
+                System 
+                Transformer]
+                offender[Offender
+                Detector]
+                victim[Victim
+                Detector]
+                angel[Guardian
+                Angel]
+            end
         
-        transformer -- Transformed
-        marker--> offender & victim
+            subgraph "Warning rising"
+                car_out[Car]:::given
+                Car2X
+            end
         
-        offender -- offender
-        detected --> angel
-        
-        victim -- victim
-        detected--> angel
-        
-        angel -- Light on --> car_out
-        angel -- Data --> Car2X
+            Car & Trace & Stub --Markers --> transformer
+            
+            transformer -- Transformed
+            marker--> offender & victim
+            
+            offender -- offender
+            detected --> angel
+            
+            victim -- victim
+            detected--> angel
+            
+            angel -- Light on --> car_out
+            angel -- Data --> Car2X
 ````
 
 ### Sensor data feeding
