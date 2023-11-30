@@ -68,7 +68,9 @@ class VictimDetector:
 
         return False
 
-
-if __name__ == "__main__":
+def run():
     victimDetector = VictimDetector()
     victimDetector.run()
+
+if __name__ == "__main__":
+    run()

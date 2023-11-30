@@ -72,7 +72,9 @@ class OffenderDetector:
 
         return False
 
-
-if __name__ == "__main__":
+def run():
     offenderDetector = OffenderDetector()
     offenderDetector.run()
+
+if __name__ == "__main__":
+    run()

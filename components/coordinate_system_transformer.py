@@ -124,7 +124,9 @@ class CoordinateTransformer:
 
         return roll_x, pitch_y, yaw_z
 
-
-if __name__ == "__main__":
+def run():
     coordinateTransformer = CoordinateTransformer()
     coordinateTransformer.run()
+
+if __name__ == "__main__":
+    run()

@@ -79,6 +79,9 @@ class RemoteVehicle:
             self.signals['warning'] = self.warning
             self.sendSignals(self.signals)
 
-if __name__ == "__main__":
+def run():
     remoteVehicle = RemoteVehicle()
     remoteVehicle.run()
+
+if __name__ == "__main__":
+    run()
