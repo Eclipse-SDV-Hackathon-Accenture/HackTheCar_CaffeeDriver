@@ -22,9 +22,6 @@ class GuardianAngel:
     def __init__(self) -> None:
         print("GuardianAngel init...")
 
-        self.mqtt = mqtt.Client()
-        self.mqtt.connect("localhost", 1883)
-
         ecal_core.initialize(sys.argv, "Python GuardianAngel")
         self.pub_turnIndicator = ProtoPublisher(
             "TurnIndicator",
@@ -49,9 +46,12 @@ class GuardianAngel:
         self.sub_OfferDetector.set_callback(self.callback_OffenderDetector)
         self.sub_VictimDetector.set_callback(self.callback_VictimDetector)
 
+        self.mqtt = mqtt.Client()
+        self.mqtt.connect("localhost", 1883)
+
     def run(self):
-        thrad_car2car = threading.Thread(target=self.car2car_loop)
-        thrad_car2car.start()
+        # thrad_car2car = threading.Thread(target=self.car2car_loop)
+        # thrad_car2car.start()
 
         while ecal_core.ok():
             print(f"offenderDetector_Detected: {self.offenderDetector_Detected}")
@@ -78,8 +78,7 @@ class GuardianAngel:
             self.pub_turnIndicator.send(pb_msg)
 
             time.sleep(0.5)
-
-            ecal_core.finalize()
+        ecal_core.finalize()
 
     def car2car_loop(self):
         while True:
