@@ -228,4 +228,5 @@ Here are some of the main tools we used to build our project:
 - python 3.11
 - eCAL v5.12.1
 - Foxglove Studio v1.79.0
-- MQTT protocol 
+- eCAL Foxglove Bridge
+- Eclipse Mosquitto (MQTT Broker)
