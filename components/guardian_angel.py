@@ -46,9 +46,8 @@ class GuardianAngel:
         self.sub_OfferDetector.set_callback(self.callback_OffenderDetector)
         self.sub_VictimDetector.set_callback(self.callback_VictimDetector)
 
-        
-        # self.mqtt = mqtt.Client()
-        # self.mqtt.connect("localhost", 1883)
+        self.mqtt = mqtt.Client()
+        self.mqtt.connect("localhost", 1883)
 
     def run(self):
         # thrad_car2car = threading.Thread(target=self.car2car_loop)
