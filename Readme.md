@@ -216,7 +216,7 @@ or errors early on in the development process.
         Stub -- Stimulation --> Component1 --> Component2 -- Result --> Evaluation
 ````
 
-A [test set](Test cases.md) containg a small amount of test cases and a testing component are also available.
+A [test set](Test cases.md) containing a small amount of test cases and a testing component are also available.
 
 ### Car2X communication channel
 
