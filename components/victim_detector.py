@@ -1,7 +1,7 @@
 import sys
 import time
 
-sys.path.insert(0, '..')
+sys.path.insert(0, "..")
 
 import ecal.core.core as ecal_core
 from ecal.core.subscriber import ProtoSubscriber
@@ -14,25 +14,25 @@ import datatypes.victim_detector_pb2 as victim_detector_pb2
 
 class VictimDetector:
     def __init__(self) -> None:
-
         print("VictimDetector init...")
 
         self.detected = False
 
         ecal_core.initialize(sys.argv, "Python VictimDetector")
 
-        # Create a String Publisher that publishes on the topic
-        # self.pub_VictimDetector_Detected = StringPublisher("VictimDetector.Detected")
-        self.pub_VictimDetector = ProtoPublisher("VictimDetector", victim_detector_pb2.VictimDetector)
-        self.sub_ROSTrafficParticipantList = ProtoSubscriber("ROSTrafficParticipantListTransformed", MarkerArray.MarkerArray)
+        self.pub_VictimDetector = ProtoPublisher(
+            "VictimDetector", victim_detector_pb2.VictimDetector
+        )
+        self.sub_ROSTrafficParticipantList = ProtoSubscriber(
+            "ROSTrafficParticipantListTransformed", MarkerArray.MarkerArray
+        )
 
-        self.sub_ROSTrafficParticipantList.set_callback(self.callback_ROSTrafficParticipantList)
+        self.sub_ROSTrafficParticipantList.set_callback(
+            self.callback_ROSTrafficParticipantList
+        )
 
     def run(self) -> None:
-
         while ecal_core.ok():
-            # self.pub_VictimDetector_Detected.send(str(self.detected))
-
             msg_VictimDetector = victim_detector_pb2.VictimDetector()
 
             msg_VictimDetector.detected = self.detected
@@ -40,41 +40,30 @@ class VictimDetector:
 
             time.sleep(0.1)
 
-        # finalize eCAL API
         ecal_core.finalize()
 
-    def callback_ROSTrafficParticipantList(self, topic_name, marker_array_proto_msg, time):
+    def callback_ROSTrafficParticipantList(
+        self, topic_name, marker_array_proto_msg, time):
         self.detected = self.check_marker(marker_array_proto_msg)
-    
+
     def check_marker(self, ma) -> bool:
         if len(ma.markers) > 0:
-            # marker loop
             for marker in ma.markers:
-
-                # type filter
                 if marker.ns != "pedestrian":
-                    # print("not pedestrian -> drop")
                     continue
-                
-                # coordinates filter
-                # victim
+
                 if marker.pose.position.x < parameters.VICTIM_DANGER_ZONE_LONG_NEAR:
-                    print('x ', marker.pose.position.x, " < ", parameters.VICTIM_DANGER_ZONE_LONG_NEAR)
                     continue
 
                 if marker.pose.position.x > parameters.VICTIM_DANGER_ZONE_LONG_FAR:
-                    print('x ', marker.pose.position.x, " > ", parameters.VICTIM_DANGER_ZONE_LONG_FAR)
                     continue
 
                 if marker.pose.position.y > parameters.VICTIM_DANGER_ZONE_LAT_FAR:
-                    print('y ', marker.pose.position.y, " > ", parameters.VICTIM_DANGER_ZONE_LAT_FAR)
                     continue
 
                 if marker.pose.position.y < parameters.VICTIM_DANGER_ZONE_LAT_NEAR:
-                    print('y ', marker.pose.position.y, " < ", parameters.VICTIM_DANGER_ZONE_LAT_NEAR)
                     continue
-
-                print("Victim ", marker.id, "detected!")
+                
                 return True
 
         return False
