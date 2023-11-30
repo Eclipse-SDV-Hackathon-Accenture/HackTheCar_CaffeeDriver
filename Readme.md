@@ -1,10 +1,5 @@
 # Hack the Car by Coffee Driver (Guardian Angel)
 
-## To do yet
-
-- [ ] method description
-- [ ] pitch slide set
-
 ## Idea for Our Tool: Warning Traffic Participants of Danger Situations using Car2X Communication
 
 The idea for our tool comes from recognizing the need to improve communication between vehicles on the road.
