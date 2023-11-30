@@ -43,6 +43,8 @@ This feature is designed to provide a clear and timely warning to all parties in
 ========================|==============
                         O
 ```
+[Real-life demo video](assets/scenario_live.mp4)
+[Visualization demo](assets/demo.mp4)
 
 Herewith is the third traffic participant introduced into usual two-participant traffic situation.
 
