@@ -10,7 +10,7 @@ By providing clear and timely communication to other road users, we believe we c
 of accidents on the road.
 We recognize the importance of efficient and effective communication and strive to contribute to the development of a
 safer transportation system.
-We have chosen to focus on one specific scenario for the SDV Hackathon 2023 challenge due to the limited timeframe.
+We have chosen to focus on one specific scenario for the SDV Hackathon 2023 challenge due to the limited time frame.
 
 ## Covered scenario
 
@@ -53,7 +53,6 @@ Herewith is the third traffic participant introduced into usual two-participant 
 
 ## Approach : Detection Algorithm and Warning System
 
-
 Our tool uses the Ego car sensor array to detect two defined traffic participants: the Offender and the Victim. The detection process includes selecting relevant objects and determining their intentions.
 
 The development of the detection algorithm is separated into two complexity stages:
@@ -63,7 +62,7 @@ The development of the detection algorithm is separated into two complexity stag
 - Stage 2: we build movement vectors to recognize situations dynamically. Not yet implemented.
 
 If a potential danger situation is identified, our tool activates a warning system. The available Ego vehicle can activate turn signal lights as a warning to all parties involved.
-In addition to this warning system, other warning channels and visualizations are possible. 
+In addition to this warning system, other warning channels and visualizations are possible.
 
 - Using car lights to visually alert traffic participants to the warning, specifically highlighting the pedestrian
   to improve visibility (In-car hardware).
@@ -78,8 +77,8 @@ In addition to this warning system, other warning channels and visualizations ar
 Our primary focus in the realization of this tool is to implement the logic for detecting relevant objects and triggering a warning system in case of potential danger situations.
 
 ```mermaid
-    flowchart LR
-        data_source[Sensor data] --> angel[Guardian Angel] --> warning[Warning system]
+      flowchart LR
+          data_source[Sensor data] --> angel[Guardian Angel] --> warning[Warning system]
 ```
 
 Both the sensor data and the warning system are provided by the given car over a high-level abstraction layer.
@@ -97,8 +96,8 @@ Both the sensor data and the warning system are provided by the given car over a
         end
 
         subgraph Danger detection
-            transformer[Coordinate
-            System
+            transformer[Coordinate 
+            System 
             Transformer]
             offender[Offender
             Detector]
@@ -126,7 +125,6 @@ Both the sensor data and the warning system are provided by the given car over a
         
         angel -- Light on --> car_out
         angel -- Data --> Car2X
-
 ```
 
 ### Sensor data feeding
@@ -191,7 +189,7 @@ The Guardian utilizes the Ego car sensor array to detect potential danger situat
 Victim.
 If a danger situation is identified, the system triggers the warning system,
 which includes activating turn signal lights on the Ego vehicle
-and (for this SDV hackathon challenge) a simulation of the Car2X
+and (for this SDV Hackathon challenge) a simulation of the Car2X
 
 ### Integration of the Guardian Angel components
 
@@ -215,13 +213,13 @@ or errors early on in the development process.
 
 ````mermaid
     flowchart LR
-  Stub -- Stimulation --> Component -- Result --> Evaluation
+        Stub -- Stimulation --> Component -- Result --> Evaluation
 
 ````
 
 ````mermaid
     flowchart LR
-  Stub -- Stimulation --> Component1 --> Component2 -- Result --> Evaluation
+        Stub -- Stimulation --> Component1 --> Component2 -- Result --> Evaluation
 
 ````
 
