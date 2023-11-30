@@ -97,7 +97,7 @@ Both the sensor data and the warning system are provided by the given car over a
         end
 
         subgraph Danger detection
-            transformer[Coordinates
+            transformer[Coordinate
             System
             Transformer]
             offender[Offender
