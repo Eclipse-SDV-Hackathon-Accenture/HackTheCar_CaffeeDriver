@@ -171,6 +171,8 @@ we can create an effective detection algorithm
 that accurately identifies potential danger situations
 and triggers the appropriate warning system.
 
+![Alt text](./assets/danger_zone.svg)
+
 ### Rising of the warning
 
 The Guardian utilizes the Ego car sensor array to detect potential danger situations involving the Offender and the
