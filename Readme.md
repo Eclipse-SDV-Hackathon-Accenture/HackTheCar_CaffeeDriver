@@ -47,8 +47,8 @@ This feature is designed to provide a clear and timely warning to all parties in
 Herewith is the third traffic participant introduced into usual two-participant traffic situation.
 
 ````mermaid
-    flowchart LR
-  Victim --- car[Ego car] --- Offender --- Victim
+        flowchart LR
+            Victim --- car[Ego car] --- Offender --- Victim
 ````
 
 ## Approach : Detection Algorithm and Warning System
@@ -76,10 +76,10 @@ In addition to this warning system, other warning channels and visualizations ar
 
 Our primary focus in the realization of this tool is to implement the logic for detecting relevant objects and triggering a warning system in case of potential danger situations.
 
-```mermaid
+````mermaid
       flowchart LR
           data_source[Sensor data] --> angel[Guardian Angel] --> warning[Warning system]
-```
+````
 
 Both the sensor data and the warning system are provided by the given car over a high-level abstraction layer.
 
@@ -96,15 +96,10 @@ Both the sensor data and the warning system are provided by the given car over a
             end
     
             subgraph "Danger detection"
-                transformer[Coordinate 
-                System 
-                Transformer]
-                offender[Offender
-                Detector]
-                victim[Victim
-                Detector]
-                angel[Guardian
-                Angel]
+                transformer[Coordinate System Transformer]
+                offender[Offender Detector]
+                victim[Victim Detector]
+                angel[Guardian Angel]
             end
         
             subgraph "Warning rising"
@@ -113,16 +108,9 @@ Both the sensor data and the warning system are provided by the given car over a
             end
         
             Car & Trace & Stub --Markers --> transformer
-            
-            transformer -- Transformed
-            marker--> offender & victim
-            
-            offender -- offender
-            detected --> angel
-            
-            victim -- victim
-            detected--> angel
-            
+            transformer -- Transformed marker--> offender & victim
+            offender -- offender detected --> angel
+            victim -- victim detected--> angel
             angel -- Light on --> car_out
             angel -- Data --> Car2X
 ````
